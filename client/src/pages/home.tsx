@@ -206,8 +206,8 @@ export default function Home() {
           
           {/* Desktop Menu */}
           <div className="hidden md:flex gap-8 text-xs font-mono uppercase tracking-widest z-50">
-            {['Ventures', 'Blog', 'Math', 'Philosophy', 'Contact'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="hover:opacity-70 transition-opacity relative group">
+            {['Ventures', 'CV', 'Blog', 'Math', 'Philosophy', 'Contact'].map((item) => (
+              <a key={item} href={item === 'CV' ? '/cv' : `#${item.toLowerCase()}`} className="hover:opacity-70 transition-opacity relative group">
                 {item}
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-current transition-all group-hover:w-full" />
               </a>
@@ -228,8 +228,8 @@ export default function Home() {
         className="fixed inset-0 bg-background z-30 flex items-center justify-center md:hidden"
       >
         <div className="flex flex-col gap-8 text-center font-display text-4xl">
-          {['Ventures', 'Blog', 'Math', 'Philosophy', 'Contact'].map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setIsMenuOpen(false)}>{item}</a>
+          {['Ventures', 'CV', 'Blog', 'Math', 'Philosophy', 'Contact'].map((item) => (
+            <a key={item} href={item === 'CV' ? '/cv' : `#${item.toLowerCase()}`} onClick={() => setIsMenuOpen(false)}>{item}</a>
           ))}
         </div>
       </motion.div>
