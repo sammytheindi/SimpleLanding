@@ -1,0 +1,166 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import siteConfig from '@/site-config'
+---
+
+<BaseLayout description={siteConfig.description}>
+  <article class="prose">
+    <h1 class="text-title">Samyak Shah</h1>
+    <p class="text-2xl font-600">
+      Founder and technology leader building at the intersection of AI,
+      healthcare, and human-computer interaction
+    </p>
+    <p>
+      I build and lead ventures that transform ambitious technical concepts into
+      commercial products. As the co-founder and Head of Technology for <a
+        href="#">EpiWatch</a
+      >, I led the development of a wearable AI platform from initial idea to a
+      market-ready medical device. My work spans the full product lifecycle:
+      securing non-dilutive grant funding, architecting full-stack solutions,
+      leading teams through rigorous FDA regulatory hurdles, and authoring core
+      intellectual property.
+    </p>
+    <p>
+      My core expertise lies in architecting and implementing novel systems in
+      regulated environments, with deep experience in AI/ML, wearable
+      technology, and brain-computer interfaces.
+    </p>
+    <p>
+      Ventures: <span class="company-link">
+        <img
+          class="inline-block h-[1em] w-auto mr-1 !mt-0 !mb-0 align-text-top"
+          src="/EpiWatchLobes.png"
+        />
+        <a target="_blank" href="https://vuejs.org/">EpiWatch</a>
+      </span>
+      <span class="company-link">
+        <img
+          class="inline-block h-[1em] w-auto mr-1 !mt-0 !mb-0 align-text-top"
+          src="/Orba_Logo_Standalone.png"
+        />
+        <a target="_blank" href="https://vuejs.org/">Orba</a></span
+      >
+      <span class="company-link">
+        <img
+          class="inline-block h-[1em] w-auto mr-1 !mt-0 !mb-0 align-text-top"
+          src="/StridesLogo.png"
+        />
+        <a target="_blank" href="https://vuejs.org/">Strides</a></span
+      >
+      <br />
+      Experience: <span class="company-link">
+        <img
+          class="inline-block h-[1em] w-auto mr-1 !mt-0 !mb-0 align-middle"
+          src="/university.shield.blue.png"
+        />
+        <a target="_blank" href="https://vuejs.org/">JHU BCI Lab</a>
+      </span>
+      <span class="company-link">
+        <img
+          class="inline-block h-[1em] w-auto mr-1 !mt-0 !mb-0 align-middle"
+          src="/philips_healthcare_logo.png"
+        />
+        <a target="_blank" href="https://vuejs.org/">Philips Healthcare</a>
+      </span>
+      <span class="company-link">
+        <img
+          class="inline-block h-[1em] w-auto mr-1 !mt-0 !mb-0 align-middle"
+          src="/InCube.png"
+        />
+        <a target="_blank" href="https://vuejs.org/">InCube Labs</a>
+      </span>
+      <br />
+      Education:
+      <span class="company-link">
+        <img
+          class="inline-block h-[1em] w-auto mr-1 !mt-0 !mb-0 align-middle"
+          src="/university.shield.blue.png"
+        />
+        <a target="_blank" href="https://vuejs.org/">Johns Hopkins</a>
+      </span>
+      <span class="company-link">
+        <img
+          class="inline-block h-[1em] w-auto mr-1 !mt-0 !mb-0 align-middle"
+          src="/GlasgowUniversity.png"
+        />
+        <a target="_blank" href="https://vuejs.org/">Glasgow University</a>
+      </span>
+      <span class="company-link">
+        <img
+          class="inline-block h-[1em] w-auto mr-1 !mt-0 !mb-0 align-middle"
+          src="/UCI.png"
+        />
+        <a target="_blank" href="https://vuejs.org/">UC Irvine</a>
+      </span>
+    </p>
+    <!-- <p>
+      A minimal, SEO-riendly portfolio and blog theme for Astro. It's inspired
+      by <a target="_blank" href="https://antfu.me">antfu.me</a>.
+    </p> -->
+    <p>
+      <img width="640" height="360" src="/hero.jpg" alt="Hero Image" />
+    </p>
+    <p>
+      My strength lies in synthesizing knowledge from disparate fields, from
+      Biomedical Engineering and Data Science to Regulatory Affairs and UI/UX.
+      This multidisciplinary synthesis is the key to solving technically
+      ambitious problems with holistic and creative solutions. I believe the
+      most resilient products are built on this fundamental understanding of the
+      entire technology stack, especially in complex domains like AI and
+      regulated healthcare.
+    </p>
+
+    <p>
+      But technology alone doesn't build a successful venture. I am deeply
+      engaged in the entire go-to-market lifecycle, from product-market fit and
+      commercialization strategy to the nuances of sales and marketing in highly
+      regulated industries. For a product to have a real-world impact, it
+      requires a seamless union of technical excellence and business acumen.
+      This is where I focus my energy as a founder.
+    </p>
+
+    <p>
+      I document my work extensively. You can explore a <a
+        target="_blank"
+        href="/projects">full list</a
+      > of my ventures and technical projects for a detailed look at my experience.
+      I also write and speak about the lessons learned along the way.
+    </p>
+
+    <p>
+      Outside of work, I am an avid runner, and tennis player. I used to play
+      high-level competitive cricket, and competitive soccer. In the winters I
+      like to go skiing (weather permitting), and ice-skating. I currently live
+      in Baltimore, USA. If you are in the area, or want to chat, feel free to
+      let me know. I am happy to setup a virtual meeting or meet in person.
+    </p>
+
+    <hr class="hr-line" />
+    <p>Find me on</p>
+    <p class="flex gap-x-4 gap-y-2 flex-wrap">
+      {
+        siteConfig.socialLinks.map((link) => (
+          <a
+            aria-label={link.text}
+            href={link.href}
+            target="_blank"
+            class="prose-link"
+          >
+            <i class:list={[link.icon]} />
+            {link.text}
+          </a>
+        ))
+      }
+    </p>
+    <p>
+      If you have any questions, please email me at
+      <a
+        prose-link
+        aria-label={siteConfig.email}
+        href={`mailto:${siteConfig.email}`}
+      >
+        {siteConfig.email}
+      </a>.
+    </p>
+  </article>
+</BaseLayout>
