@@ -207,7 +207,7 @@ export default function Home() {
           {/* Desktop Menu */}
           <div className="hidden md:flex gap-8 text-xs font-mono uppercase tracking-widest z-50">
             {['Ventures', 'CV', 'Blog', 'Math', 'Philosophy', 'Contact'].map((item) => (
-              <a key={item} href={item === 'CV' ? '/cv' : `#${item.toLowerCase()}`} className="hover:opacity-70 transition-opacity relative group">
+              <a key={item} href={item === 'CV' ? '/cv' : item === 'Blog' ? '/blog' : `#${item.toLowerCase()}`} className="hover:opacity-70 transition-opacity relative group">
                 {item}
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-current transition-all group-hover:w-full" />
               </a>
@@ -229,7 +229,7 @@ export default function Home() {
       >
         <div className="flex flex-col gap-8 text-center font-display text-4xl">
           {['Ventures', 'CV', 'Blog', 'Math', 'Philosophy', 'Contact'].map((item) => (
-            <a key={item} href={item === 'CV' ? '/cv' : `#${item.toLowerCase()}`} onClick={() => setIsMenuOpen(false)}>{item}</a>
+            <a key={item} href={item === 'CV' ? '/cv' : item === 'Blog' ? '/blog' : `#${item.toLowerCase()}`} onClick={() => setIsMenuOpen(false)}>{item}</a>
           ))}
         </div>
       </motion.div>
@@ -274,7 +274,7 @@ export default function Home() {
                   View Ventures
                 </MagneticButton>
                 <MagneticButton className="px-6 py-3 border border-border font-mono text-xs uppercase tracking-widest hover:bg-muted transition-colors bg-transparent">
-                  Read Blog
+                  <a href="/blog">Read Blog</a>
                 </MagneticButton>
               </div>
             </FadeIn>
@@ -409,7 +409,7 @@ export default function Home() {
                   I write about the lessons learned building in regulated industries, the philosophy of technology, and the mathematics behind modern AI.
                 </p>
                 <MagneticButton className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest border border-background/20 px-6 py-3 hover:bg-background hover:text-foreground transition-colors">
-                  View All Posts <ArrowUpRight className="w-4 h-4" />
+                  <a href="/blog" className="flex items-center gap-2">View All Posts <ArrowUpRight className="w-4 h-4" /></a>
                 </MagneticButton>
               </FadeIn>
             </div>
@@ -420,7 +420,7 @@ export default function Home() {
                 "On the Convergence of BCI and Consumer Wearables"
               ].map((post, i) => (
                 <FadeIn key={i} delay={i * 0.1}>
-                  <a href="#" className="block group">
+                  <a href="/blog" className="block group">
                     <span className="font-mono text-xs text-primary mb-2 block">Essay 0{i+1}</span>
                     <h3 className="font-display text-2xl group-hover:underline decoration-1 underline-offset-4 decoration-primary/50">{post}</h3>
                   </a>
