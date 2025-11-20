@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Filter, Calendar, Clock, Tag, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { Link } from "wouter";
+import Navbar from "@/components/Navbar";
 
 // --- Sample Data ---
 
@@ -17,15 +18,17 @@ export const BLOG_POSTS = [
     category: "Deep Dives",
     excerpt: "Exploring the moral implications of algorithmic bias in healthcare settings and the regulatory frameworks emerging to address them.",
     content: `
-      <p>As artificial intelligence becomes increasingly integrated into clinical workflows, the question shifts from "can we build it?" to "should we trust it?" Clinical Decision Support Systems (CDSS) powered by machine learning offer the promise of earlier diagnoses and personalized treatment plans, but they also introduce significant ethical risks.</p>
-      
-      <h3>The Black Box Problem</h3>
-      <p>One of the primary ethical challenges is interpretability. Deep learning models, particularly those used in imaging (radiology, pathology), often operate as "black boxes." When a model suggests a diagnosis of malignancy with 99% confidence, but cannot explain <em>why</em>, can a physician ethically act on that information?</p>
-      
-      <p>Regulatory bodies like the FDA are moving towards requirements for "explainability" in Software as a Medical Device (SaMD). This isn't just a technical nice-to-have; it's a safety requirement. If a model fails, we need to know why to prevent recurrence.</p>
+As artificial intelligence becomes increasingly integrated into clinical workflows, the question shifts from "can we build it?" to "should we trust it?" Clinical Decision Support Systems (CDSS) powered by machine learning offer the promise of earlier diagnoses and personalized treatment plans, but they also introduce significant ethical risks.
 
-      <h3>Algorithmic Bias and Health Equity</h3>
-      <p>Models are only as good as the data they are trained on. Historically, medical datasets have been heavily skewed towards specific demographics. An AI trained primarily on data from urban academic medical centers may perform poorly on rural populations or underrepresented minorities.</p>
+### The Black Box Problem
+
+One of the primary ethical challenges is interpretability. Deep learning models, particularly those used in imaging (radiology, pathology), often operate as "black boxes." When a model suggests a diagnosis of malignancy with 99% confidence, but cannot explain _why_, can a physician ethically act on that information?
+
+Regulatory bodies like the FDA are moving towards requirements for "explainability" in Software as a Medical Device (SaMD). This isn't just a technical nice-to-have; it's a safety requirement. If a model fails, we need to know why to prevent recurrence.
+
+### Algorithmic Bias and Health Equity
+
+Models are only as good as the data they are trained on. Historically, medical datasets have been heavily skewed towards specific demographics. An AI trained primarily on data from urban academic medical centers may perform poorly on rural populations or underrepresented minorities.
     `
   },
   {
@@ -37,19 +40,19 @@ export const BLOG_POSTS = [
     category: "Tutorials",
     excerpt: "A practical guide for engineering teams on setting up Design Controls, Traceability Matrices, and QMS integrations from Day 1.",
     content: `
-      <p>Many startups treat FDA compliance as a paperwork exercise to be completed after the product is built. This is a fatal mistake. Compliance is an engineering constraint, not just a legal one.</p>
+Many startups treat FDA compliance as a paperwork exercise to be completed after the product is built. This is a fatal mistake. Compliance is an engineering constraint, not just a legal one.
 
-      <h3>Design Controls as Engineering Artifacts</h3>
-      <p>In the software world, we talk about requirements, specifications, and tests. The FDA uses specific language: User Needs, Design Inputs, Design Outputs, and Verification/Validation.</p>
-      
-      <ul>
-        <li><strong>User Needs:</strong> What problem are we solving? (e.g., "User needs to know when a seizure occurs.")</li>
-        <li><strong>Design Input:</strong> The technical requirement. (e.g., "System shall detect tonic-clonic motion with >90% sensitivity.")</li>
-        <li><strong>Design Output:</strong> The code/architecture. (e.g., The specific Python classifier module.)</li>
-      </ul>
+### Design Controls as Engineering Artifacts
 
-      <h3>Automating Traceability</h3>
-      <p>The Traceability Matrix links these three together. Manual matrices are brittle. We implemented automated traceability by linking Jira tickets (Requirements) to GitHub PRs (Implementation) and Xray Tests (Verification). This allows us to generate a real-time compliance matrix with every build.</p>
+In the software world, we talk about requirements, specifications, and tests. The FDA uses specific language: User Needs, Design Inputs, Design Outputs, and Verification/Validation.
+
+- **User Needs:** What problem are we solving? (e.g., "User needs to know when a seizure occurs.")
+- **Design Input:** The technical requirement. (e.g., "System shall detect tonic-clonic motion with >90% sensitivity.")
+- **Design Output:** The code/architecture. (e.g., The specific Python classifier module.)
+
+### Automating Traceability
+
+The Traceability Matrix links these three together. Manual matrices are brittle. We implemented automated traceability by linking Jira tickets (Requirements) to GitHub PRs (Implementation) and Xray Tests (Verification). This allows us to generate a real-time compliance matrix with every build.
     `
   },
   {
@@ -61,9 +64,9 @@ export const BLOG_POSTS = [
     category: "Notes",
     excerpt: "Thoughts on how non-invasive neural interfaces are slowly merging with the form factors of standard smartwatches and earbuds.",
     content: `
-      <p>We are seeing a shift in Brain-Computer Interfaces (BCI) from purely clinical, invasive devices (like Utah arrays) to consumer-friendly form factors. Companies like Meta and Apple are investigating neural inputs via wrist-based electromyography (EMG) and ear-based EEG.</p>
-      
-      <p>The "AirPods as a Platform" concept is particularly interesting. The ear canal is an excellent location for biological sensing—close to the brain for EEG, stable for motion artifacts, and vascularized for heart rate.</p>
+We are seeing a shift in Brain-Computer Interfaces (BCI) from purely clinical, invasive devices (like Utah arrays) to consumer-friendly form factors. Companies like Meta and Apple are investigating neural inputs via wrist-based electromyography (EMG) and ear-based EEG.
+
+The "AirPods as a Platform" concept is particularly interesting. The ear canal is an excellent location for biological sensing—close to the brain for EEG, stable for motion artifacts, and vascularized for heart rate.
     `
   },
   {
@@ -75,10 +78,11 @@ export const BLOG_POSTS = [
     category: "Challenges",
     excerpt: "My attempt at reducing the latency of a Llama-2-7b model on edge devices using quantization and pruning.",
     content: `
-      <p>This week's challenge was to get a 7B parameter model running at >10 tokens/sec on a standard MacBook Air (M1) without destroying perplexity.</p>
-      
-      <h3>Approach</h3>
-      <p>I utilized <code>llama.cpp</code> for 4-bit quantization (Q4_K_M). The results were surprisingly robust. The memory footprint dropped from ~14GB (FP16) to ~4GB, fitting entirely within the unified memory of the base M1 chip.</p>
+This week's challenge was to get a 7B parameter model running at >10 tokens/sec on a standard MacBook Air (M1) without destroying perplexity.
+
+### Approach
+
+I utilized \`llama.cpp\` for 4-bit quantization (Q4_K_M). The results were surprisingly robust. The memory footprint dropped from ~14GB (FP16) to ~4GB, fitting entirely within the unified memory of the base M1 chip.
     `
   },
   {
@@ -90,8 +94,9 @@ export const BLOG_POSTS = [
     category: "Posts",
     excerpt: "Memory safety without garbage collection makes Rust a compelling choice for high-reliability systems where a crash is not an option.",
     content: `
-      <p>In medical devices, reliability is paramount. A "segfault" isn't just an annoyance; it could mean a missed alarm or a halted therapy.</p>
-      <p>C++ has long been the standard, but managing memory manually is error-prone. Rust's borrow checker enforces memory safety at compile time. This eliminates entire classes of bugs (buffer overflows, use-after-free) that are common in C/C++ codebases.</p>
+In medical devices, reliability is paramount. A "segfault" isn't just an annoyance; it could mean a missed alarm or a halted therapy.
+
+C++ has long been the standard, but managing memory manually is error-prone. Rust's borrow checker enforces memory safety at compile time. This eliminates entire classes of bugs (buffer overflows, use-after-free) that are common in C/C++ codebases.
     `
   },
    {
@@ -103,7 +108,29 @@ export const BLOG_POSTS = [
     category: "Deep Dives",
     excerpt: "Breaking down the stochastic differential equations (SDEs) that power modern generative image models.",
     content: `
-      <p>At their core, diffusion models are about destroying and reconstructing information. We take an image and slowly add Gaussian noise until it is pure static. The model learns the <em>reverse</em> process: how to take static and denoise it step-by-step into a coherent image.</p>
+At their core, diffusion models are about destroying and reconstructing information. We take an image and slowly add Gaussian noise until it is pure static. The model learns the _reverse_ process: how to take static and denoise it step-by-step into a coherent image.
+
+### The Forward Process
+
+We can model the forward diffusion process as a Markov chain. Let $x_0$ be the original image. At each step $t$, we add a small amount of Gaussian noise:
+
+$$
+q(x_t | x_{t-1}) = \\mathcal{N}(x_t; \\sqrt{1 - \\beta_t} x_{t-1}, \\beta_t \\mathbf{I})
+$$
+
+Where $\\beta_t$ is a variance schedule. As $t \\to \\infty$, $x_t$ approaches an isotropic Gaussian distribution $\\mathcal{N}(0, \\mathbf{I})$.
+
+### The Reverse Process
+
+The goal is to learn the reverse distribution $p_\\theta(x_{t-1} | x_t)$. Since the exact reverse is intractable, we approximate it with a neural network (usually a U-Net):
+
+$$
+p_\\theta(x_{t-1} | x_t) = \\mathcal{N}(x_{t-1}; \\mu_\\theta(x_t, t), \\Sigma_\\theta(x_t, t))
+$$
+
+![Diffusion Process Diagram](https://upload.wikimedia.org/wikipedia/commons/2/21/Diffusion_Model.png)
+
+This simple idea connects thermodynamics (non-equilibrium statistical physics) with modern deep learning.
     `
   }
 ];
@@ -173,20 +200,7 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
-      
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm border-b border-border">
-        <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href="/">
-            <a className="text-lg font-display font-bold tracking-tighter">SAMYAK SHAH</a>
-          </Link>
-          <div className="flex items-center gap-6">
-             <Link href="/">
-               <a className="text-xs font-mono uppercase tracking-widest hover:text-primary transition-colors">Back to Home</a>
-             </Link>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="container mx-auto px-6 pt-32 pb-24">
         <header className="mb-24">

@@ -1,70 +1,11 @@
-import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Mail, Github, Linkedin, Twitter, Menu, X } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import abstractTexture from "@assets/generated_images/abstract_data_visualization_flow_in_navy_and_black.png";
+import Navbar from "@/components/Navbar";
+import { Link } from "wouter";
 
 // --- Components ---
-
-const CustomCursor = () => {
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-  const [isHovering, setIsHovering] = useState(false);
-
-  useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 16);
-      cursorY.set(e.clientY - 16);
-    };
-
-    const handleMouseOver = (e: MouseEvent) => {
-      if ((e.target as HTMLElement).tagName === 'A' || (e.target as HTMLElement).tagName === 'BUTTON' || (e.target as HTMLElement).closest('a') || (e.target as HTMLElement).closest('button')) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
-    };
-
-    window.addEventListener("mousemove", moveCursor);
-    window.addEventListener("mouseover", handleMouseOver);
-
-    return () => {
-      window.removeEventListener("mousemove", moveCursor);
-      window.removeEventListener("mouseover", handleMouseOver);
-    };
-  }, [cursorX, cursorY]);
-
-  return (
-    <>
-      <motion.div
-        className="fixed top-0 left-0 w-8 h-8 border border-primary rounded-full pointer-events-none z-[100] hidden md:block mix-blend-difference"
-        style={{
-          x: cursorX,
-          y: cursorY,
-        }}
-        animate={{
-          scale: isHovering ? 1.5 : 1,
-          backgroundColor: isHovering ? "hsl(var(--primary))" : "transparent",
-        }}
-        transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-      />
-      <motion.div
-        className="fixed top-0 left-0 w-2 h-2 bg-primary rounded-full pointer-events-none z-[100] hidden md:block"
-        style={{
-          x: useSpring(cursorX, { stiffness: 500, damping: 25 }), // Slightly delayed follow
-          y: useSpring(cursorY, { stiffness: 500, damping: 25 }),
-          translateX: 12, // Center inside the larger circle
-          translateY: 12
-        }}
-      />
-    </>
-  );
-};
-
-const NoiseOverlay = () => (
-  <div className="fixed inset-0 pointer-events-none z-50 opacity-[0.04] mix-blend-overlay">
-    <div className="absolute inset-0 bg-repeat w-full h-full animate-noise" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
-  </div>
-);
 
 const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => (
   <motion.div
@@ -79,29 +20,9 @@ const FadeIn = ({ children, delay = 0, className = "" }: { children: React.React
 );
 
 const MagneticButton = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
-  const ref = useRef<HTMLButtonElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const { clientX, clientY } = e;
-    const { left, top, width, height } = ref.current?.getBoundingClientRect() || { left: 0, top: 0, width: 0, height: 0 };
-    const center = { x: left + width / 2, y: top + height / 2 };
-    x.set((clientX - center.x) * 0.2);
-    y.set((clientY - center.y) * 0.2);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
+  // Simplified for this file since we are using global cursor now, but keeping the hover effect
   return (
     <motion.button
-      ref={ref}
-      style={{ x, y }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
@@ -112,7 +33,7 @@ const MagneticButton = ({ children, className = "" }: { children: React.ReactNod
   );
 };
 
-const ProjectItem = ({ title, role, year, description }: { title: string, role: string, year: string, description?: string }) => {
+export const ProjectItem = ({ title, role, year, description }: { title: string, role: string, year: string, description?: string }) => {
   return (
     <motion.div 
       initial={{ opacity: 0, borderBottomColor: "hsl(var(--border))" }}
@@ -188,7 +109,6 @@ const HeroBackground = () => {
 // --- Main Page ---
 
 export default function Home() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   
   // Parallax for texture
@@ -196,43 +116,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden cursor-none">
-      <CustomCursor />
-      <NoiseOverlay />
       
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-40 mix-blend-difference text-background">
-        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-          <a href="#" className="text-lg font-display font-bold tracking-tighter z-50">SAMYAK SHAH</a>
-          
-          {/* Desktop Menu */}
-          <div className="hidden md:flex gap-8 text-xs font-mono uppercase tracking-widest z-50">
-            {['Ventures', 'CV', 'Blog', 'Math', 'Philosophy', 'Contact'].map((item) => (
-              <a key={item} href={item === 'CV' ? '/cv' : item === 'Blog' ? '/blog' : `#${item.toLowerCase()}`} className="hover:opacity-70 transition-opacity relative group">
-                {item}
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-current transition-all group-hover:w-full" />
-              </a>
-            ))}
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <button className="md:hidden z-50" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X /> : <Menu />}
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      <motion.div 
-        initial={{ opacity: 0, pointerEvents: "none" }}
-        animate={{ opacity: isMenuOpen ? 1 : 0, pointerEvents: isMenuOpen ? "auto" : "none" }}
-        className="fixed inset-0 bg-background z-30 flex items-center justify-center md:hidden"
-      >
-        <div className="flex flex-col gap-8 text-center font-display text-4xl">
-          {['Ventures', 'CV', 'Blog', 'Math', 'Philosophy', 'Contact'].map((item) => (
-            <a key={item} href={item === 'CV' ? '/cv' : item === 'Blog' ? '/blog' : `#${item.toLowerCase()}`} onClick={() => setIsMenuOpen(false)}>{item}</a>
-          ))}
-        </div>
-      </motion.div>
+      {/* Use Global Navbar */}
+      <Navbar />
 
       {/* Hero Section */}
       <header className="relative min-h-[95vh] flex flex-col justify-center border-b border-border overflow-hidden">
@@ -271,10 +157,10 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <MagneticButton className="px-6 py-3 bg-foreground text-background font-mono text-xs uppercase tracking-widest hover:bg-primary transition-colors">
-                  View Ventures
+                  <Link href="/ventures">View Ventures</Link>
                 </MagneticButton>
                 <MagneticButton className="px-6 py-3 border border-border font-mono text-xs uppercase tracking-widest hover:bg-muted transition-colors bg-transparent">
-                  <a href="/blog">Read Blog</a>
+                  <Link href="/blog">Read Blog</Link>
                 </MagneticButton>
               </div>
             </FadeIn>
@@ -346,18 +232,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Ventures Section */}
+      {/* Ventures Section - Simplified or Removed? User asked to make a separate page. 
+          I will keep a "Selected Work" summary but link to the full page. */}
       <section id="ventures" className="py-24 container mx-auto px-6 relative">
         <div className="absolute top-0 left-0 w-1 h-24 bg-primary" />
         
         <FadeIn className="mb-16 flex items-end justify-between">
           <div>
-            <span className="font-mono text-primary text-xs uppercase tracking-widest mb-2 block">Portfolio</span>
-            <h2 className="font-display text-5xl md:text-6xl">Ventures & Work</h2>
+            <span className="font-mono text-primary text-xs uppercase tracking-widest mb-2 block">Featured</span>
+            <h2 className="font-display text-5xl md:text-6xl">Selected Work</h2>
           </div>
-          <span className="hidden md:block font-mono text-xs text-muted-foreground max-w-xs text-right">
-            Select projects from concept to commercialization
-          </span>
+          <Link href="/ventures">
+            <a className="hidden md:flex items-center gap-2 font-mono text-xs text-muted-foreground hover:text-primary transition-colors">
+              View All Projects <ArrowUpRight className="w-4 h-4" />
+            </a>
+          </Link>
         </FadeIn>
 
         <div className="flex flex-col">
@@ -365,7 +254,7 @@ export default function Home() {
             title="EpiWatch" 
             role="Co-Founder / Head of Tech" 
             year="Current"
-            description="Led development of a wearable AI platform from idea to market-ready medical device. Secured grant funding, architected full-stack solutions, and managed FDA regulatory hurdles."
+            description="Led development of a wearable AI platform from idea to market-ready medical device."
           />
           <ProjectItem 
             title="Orba" 
@@ -378,18 +267,6 @@ export default function Home() {
             role="Lead Engineer" 
             year="2022"
             description="Advanced wearable integration for gait analysis and rehabilitation monitoring."
-          />
-          <ProjectItem 
-            title="JHU BCI Lab" 
-            role="Researcher" 
-            year="2021"
-            description="Researching novel brain-computer interface systems for motor control restoration."
-          />
-          <ProjectItem 
-            title="Philips Healthcare" 
-            role="Systems Engineer" 
-            year="2020"
-            description="Working on next-generation diagnostic imaging systems and workflow optimization."
           />
           <div className="border-t border-border" />
         </div>
@@ -409,7 +286,9 @@ export default function Home() {
                   I write about the lessons learned building in regulated industries, the philosophy of technology, and the mathematics behind modern AI.
                 </p>
                 <MagneticButton className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest border border-background/20 px-6 py-3 hover:bg-background hover:text-foreground transition-colors">
-                  <a href="/blog" className="flex items-center gap-2">View All Posts <ArrowUpRight className="w-4 h-4" /></a>
+                  <Link href="/blog">
+                    <a className="flex items-center gap-2">View All Posts <ArrowUpRight className="w-4 h-4" /></a>
+                  </Link>
                 </MagneticButton>
               </FadeIn>
             </div>
@@ -420,10 +299,12 @@ export default function Home() {
                 "On the Convergence of BCI and Consumer Wearables"
               ].map((post, i) => (
                 <FadeIn key={i} delay={i * 0.1}>
-                  <a href="/blog" className="block group">
-                    <span className="font-mono text-xs text-primary mb-2 block">Essay 0{i+1}</span>
-                    <h3 className="font-display text-2xl group-hover:underline decoration-1 underline-offset-4 decoration-primary/50">{post}</h3>
-                  </a>
+                  <Link href="/blog">
+                    <a className="block group">
+                      <span className="font-mono text-xs text-primary mb-2 block">Essay 0{i+1}</span>
+                      <h3 className="font-display text-2xl group-hover:underline decoration-1 underline-offset-4 decoration-primary/50">{post}</h3>
+                    </a>
+                  </Link>
                 </FadeIn>
               ))}
             </div>
@@ -480,7 +361,9 @@ export default function Home() {
             <p className="font-mono text-sm text-primary uppercase tracking-widest mb-8">Connect</p>
             <h2 className="font-display text-6xl md:text-7xl leading-tight mb-12">
               Building something ambitious? <br />
-              <a href="mailto:hello@samyak.shah" className="text-muted-foreground hover:text-foreground transition-colors decoration-primary underline underline-offset-8 decoration-2">Let's talk.</a>
+              <Link href="/contact">
+                <a className="text-muted-foreground hover:text-foreground transition-colors decoration-primary underline underline-offset-8 decoration-2">Let's talk.</a>
+              </Link>
             </h2>
             
             <div className="flex flex-wrap gap-4 md:gap-8 font-mono text-sm">
@@ -507,8 +390,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 border-t border-border pt-8 font-mono text-xs text-muted-foreground uppercase tracking-widest">
           <p>&copy; 2025 Samyak Shah.</p>
           <div className="flex gap-8">
-            <a href="#" className="hover:text-foreground">Math</a>
-            <a href="#" className="hover:text-foreground">Philosophy</a>
+            <Link href="/contact"><a className="hover:text-foreground">Contact</a></Link>
             <a href="#" className="hover:text-foreground">Colophon</a>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Download, Mail, Linkedin, Globe, Plus, Minus, Calendar, MapPin } from "lucide-react";
 import { useState } from "react";
+import Navbar from "@/components/Navbar";
 
 // --- Components ---
 
@@ -130,18 +131,7 @@ export default function CV() {
         style={{ scaleX }}
       />
 
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-sm border-b border-border">
-        <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-          <a href="/" className="text-lg font-display font-bold tracking-tighter">SAMYAK SHAH</a>
-          <div className="flex items-center gap-6">
-             <a href="/" className="text-xs font-mono uppercase tracking-widest hover:text-primary transition-colors">Back to Home</a>
-             <button className="hidden md:flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 text-xs font-mono uppercase tracking-widest hover:bg-primary/90 transition-colors">
-              <Download className="w-3 h-3" /> Download PDF
-            </button>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="container mx-auto px-6 pt-32 pb-24">
         
