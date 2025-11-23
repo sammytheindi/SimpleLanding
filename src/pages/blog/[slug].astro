@@ -1,0 +1,24 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BlogPost from '../../components/BlogPost';
+import { getCollection } from 'astro:content';
+
+import MdxImage from '../../components/MdxImage.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title}>
+	<BlogPost post={post} client:load>
+    <Content components={{ img: MdxImage }} />
+  </BlogPost>
+</Layout>

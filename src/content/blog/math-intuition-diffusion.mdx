@@ -1,0 +1,31 @@
+---
+title: "Mathematical Intuition behind Diffusion Models"
+date: "May 10, 2024"
+readTime: "15 min read"
+category: "Deep Dives"
+excerpt: "Breaking down the stochastic differential equations (SDEs) that power modern generative image models."
+---
+
+At their core, diffusion models are about destroying and reconstructing information. We take an image and slowly add Gaussian noise until it is pure static. The model learns the _reverse_ process: how to take static and denoise it step-by-step into a coherent image.
+
+### The Forward Process
+
+We can model the forward diffusion process as a Markov chain. Let $x_0$ be the original image. At each step $t$, we add a small amount of Gaussian noise:
+
+$$
+q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t \mathbf{I})
+$$
+
+Where $\beta_t$ is a variance schedule. As $t \to \infty$, $x_t$ approaches an isotropic Gaussian distribution $\mathcal{N}(0, \mathbf{I})$.
+
+### The Reverse Process
+
+The goal is to learn the reverse distribution $p_\theta(x_{t-1} | x_t)$. Since the exact reverse is intractable, we approximate it with a neural network (usually a U-Net):
+
+$$
+p_\theta(x_{t-1} | x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma_\theta(x_t, t))
+$$
+
+![Diffusion Process Diagram](https://upload.wikimedia.org/wikipedia/commons/2/21/Diffusion_Model.png)
+
+This simple idea connects thermodynamics (non-equilibrium statistical physics) with modern deep learning.

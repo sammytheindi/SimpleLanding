@@ -1,0 +1,13 @@
+---
+title: "Weekly Challenge: Optimizing Transformer Inference"
+date: "Jul 15, 2024"
+readTime: "4 min read"
+category: "Challenges"
+excerpt: "My attempt at reducing the latency of a Llama-2-7b model on edge devices using quantization and pruning."
+---
+
+This week's challenge was to get a 7B parameter model running at >10 tokens/sec on a standard MacBook Air (M1) without destroying perplexity.
+
+### Approach
+
+I utilized `llama.cpp` for 4-bit quantization (Q4_K_M). The results were surprisingly robust. The memory footprint dropped from ~14GB (FP16) to ~4GB, fitting entirely within the unified memory of the base M1 chip.

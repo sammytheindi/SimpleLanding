@@ -1,0 +1,11 @@
+---
+title: "Why I chose Rust for Medical Device Middleware"
+date: "Jun 20, 2024"
+readTime: "10 min read"
+category: "Posts"
+excerpt: "Memory safety without garbage collection makes Rust a compelling choice for high-reliability systems where a crash is not an option."
+---
+
+In medical devices, reliability is paramount. A "segfault" isn't just an annoyance; it could mean a missed alarm or a halted therapy.
+
+C++ has long been the standard, but managing memory manually is error-prone. Rust's borrow checker enforces memory safety at compile time. This eliminates entire classes of bugs (buffer overflows, use-after-free) that are common in C/C++ codebases.
