@@ -71,8 +71,8 @@ export const CustomCursor = () => {
       <motion.div
         className={`fixed top-0 left-0 w-2 h-2 rounded-full pointer-events-none z-[9999] transition-colors duration-300 ${isLight ? 'bg-yellow-300' : 'bg-yellow-600'}`}
         style={{
-          x: useSpring(cursorX, { stiffness: 500, damping: 25 }),
-          y: useSpring(cursorY, { stiffness: 500, damping: 25 }),
+          x: cursorX,
+          y: cursorY,
           translateX: 12,
           translateY: 12
         }}

@@ -60,23 +60,23 @@ export default function Ventures() {
               Ventures & <br/> <span className="text-primary">Projects</span>
             </h1>
             <p className="font-mono text-sm md:text-base text-muted-foreground max-w-xl leading-relaxed">
-              A selected collection of companies founded, products built, and research conducted at the intersection of AI, Healthcare, and Human-Computer Interaction.
+              A selected collection of production ML systems, data platforms, and applied AI products built across healthcare, BCI research, and enterprise automation.
             </p>
           </FadeIn>
         </header>
 
         <div className="flex flex-col">
-          <ProjectListItem 
-            title="EpiWatch" 
-            role="Co-Founder & Head of Tech" 
+          <ProjectListItem
+            title="EpiWatch"
+            role="Co-Founder / Principal ML Engineer"
             year="Current"
-            description="A wearable AI platform for seizure detection. Led development from idea to FDA-compliant medical device. Secured grant funding, architected full-stack solutions, and managed regulatory hurdles."
+            description="Built a production wearable ML platform for real-time seizure detection. Novel algorithm with 10x improvement over prior art, FDA-cleared. Led on-device inference, distributed Spark training, probabilistic modeling, ClickHouse data platform, and full MLOps stack."
           />
-          <ProjectListItem 
-            title="Orba" 
-            role="Founder" 
+          <ProjectListItem
+            title="Orba"
+            role="Co-Founder / Applied ML Engineer"
             year="2023"
-            description="AI-based event-triggered marketing product. Built the frontend dashboard, AI sales chatbot, and distributed web scraping system."
+            description="Production LLM platform for customer-facing automation — RAG pipelines, fine-tuning, NeMo Guardrails, real-time voice AI with sub-200ms latency."
           />
           <ProjectListItem 
             title="Strides" 
@@ -90,11 +90,11 @@ export default function Ventures() {
             year="2021"
             description="Community-driven project for scraping job applications. Provided novel method for bypassing CAPTCHA restrictions."
           />
-          <ProjectListItem 
-            title="JHU BCI Lab" 
-            role="Researcher" 
+          <ProjectListItem
+            title="JHU BCI Lab"
+            role="Senior Software Engineer"
             year="2021"
-            description="Researching novel brain-computer interface systems for motor control restoration. Developed LLM-based BCI application with long-term memory."
+            description="Production real-time inference pipeline (sub-70ms latency), HMM + deep learning for neural decoding, Bayesian/MCMC probabilistic modeling, LLM-based BCI with long-term memory."
           />
           <ProjectListItem 
             title="Philips Healthcare" 

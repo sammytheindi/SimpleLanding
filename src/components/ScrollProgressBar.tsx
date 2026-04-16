@@ -81,7 +81,7 @@ export default function ScrollProgressBar() {
   };
 
   return (
-    <div className="fixed top-20 left-0 right-0 h-2 z-50 bg-background/50 backdrop-blur-sm border-b border-border/30">
+    <div className="fixed top-20 left-0 right-0 h-2 z-50 bg-background/50 backdrop-blur-sm">
       {/* Progress bar */}
       <motion.div 
         className="absolute inset-0 bg-primary/80 origin-left"

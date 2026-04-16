@@ -6,7 +6,15 @@ import EEGBackground from "./EEGBackground";
 
 // --- Components ---
 
-const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) => (
+const FadeIn = ({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) => (
   <motion.div
     initial={{ opacity: 0, y: 40 }}
     whileInView={{ opacity: 1, y: 0 }}
@@ -18,7 +26,13 @@ const FadeIn = ({ children, delay = 0, className = "" }: { children: React.React
   </motion.div>
 );
 
-const MagneticButton = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => {
+const MagneticButton = ({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
   return (
     <motion.button
       whileHover={{ scale: 1.05 }}
@@ -31,37 +45,55 @@ const MagneticButton = ({ children, className = "" }: { children: React.ReactNod
   );
 };
 
-export const ProjectItem = ({ title, role, year, description }: { title: string, role: string, year: string, description?: string }) => {
+export const ProjectItem = ({
+  title,
+  role,
+  year,
+  description,
+}: {
+  title: string;
+  role: string;
+  year: string;
+  description?: string;
+}) => {
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, borderBottomColor: "hsl(var(--border))" }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
-      whileHover={{ 
-        borderBottomColor: "hsl(var(--primary))", 
+      whileHover={{
+        borderBottomColor: "hsl(var(--primary))",
         backgroundColor: "hsl(var(--muted) / 0.3)",
-        paddingLeft: "1rem"
+        paddingLeft: "1rem",
       }}
       transition={{ duration: 0.3 }}
       className="group flex flex-col md:flex-row md:items-start border-t border-border py-8 px-4 -mx-4 transition-all duration-300 cursor-pointer relative overflow-hidden"
     >
       {/* Animated background on hover */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 bg-primary/5 z-0"
         initial={{ x: "-100%" }}
         whileHover={{ x: 0 }}
         transition={{ duration: 0.4, ease: "circOut" }}
       />
-      
-      <span className="font-mono text-xs md:w-32 text-muted-foreground group-hover:text-primary transition-colors mb-2 md:mb-0 pt-2 z-10 relative">{year}</span>
+
+      <span className="font-mono text-xs md:w-32 text-muted-foreground group-hover:text-primary transition-colors mb-2 md:mb-0 pt-2 z-10 relative">
+        {year}
+      </span>
       <div className="flex-1 z-10 relative">
-        <div className="flex items-baseline justify-between mb-2">
-          <h3 className="font-display text-2xl md:text-3xl group-hover:translate-x-2 transition-transform duration-300">{title}</h3>
+        <div className="flex items-baseline justify-between mb-1">
+          <h3 className="font-display text-2xl md:text-3xl group-hover:translate-x-2 transition-transform duration-300">
+            {role}
+          </h3>
           <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 -translate-y-2 group-hover:translate-y-0 transition-all duration-300 text-primary" />
         </div>
-        <p className="font-mono text-sm text-muted-foreground max-w-xl">{description}</p>
+        <p className="font-mono text-xs text-muted-foreground mb-2 uppercase tracking-widest">
+          {title}
+        </p>
+        <p className="font-mono text-sm text-muted-foreground max-w-xl">
+          {description}
+        </p>
       </div>
-      <span className="font-mono text-xs md:w-32 text-right text-muted-foreground mt-4 md:mt-0 pt-2 uppercase tracking-widest z-10 relative">{role}</span>
     </motion.div>
   );
 };
@@ -73,28 +105,31 @@ const HeroBackground = () => {
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Abstract Geometric Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-      
+
       {/* Moving Gradient Orbs */}
-      <motion.div 
-        animate={{ 
+      <motion.div
+        animate={{
           x: [0, 100, 0],
           y: [0, -50, 0],
-          opacity: [0.3, 0.6, 0.3]
+          opacity: [0.3, 0.6, 0.3],
         }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
         className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] mix-blend-screen"
       />
-      <motion.div 
-        animate={{ 
+      <motion.div
+        animate={{
           x: [0, -100, 0],
           y: [0, 100, 0],
-          opacity: [0.2, 0.5, 0.2]
+          opacity: [0.2, 0.5, 0.2],
         }}
-        transition={{ duration: 25, repeat: Infinity, ease: "linear", delay: 2 }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "linear",
+          delay: 2,
+        }}
         className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-blue-900/20 rounded-full blur-[100px] mix-blend-screen"
       />
-      
-
     </div>
   );
 };
@@ -103,19 +138,18 @@ const HeroBackground = () => {
 
 export default function Home() {
   const { scrollY } = useScroll();
-  
+
   // Parallax for texture
   const y1 = useTransform(scrollY, [0, 1000], [0, 150]);
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden cursor-none">
-      
       {/* Use Global Navbar */}
       <Navbar />
 
       {/* Hero Section */}
       <header className="relative min-h-[95vh] flex flex-col justify-center border-b border-border overflow-hidden">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
@@ -124,46 +158,63 @@ export default function Home() {
           <HeroBackground />
           <EEGBackground lineCount={15} opacity={0.075} />
         </motion.div>
-        
+
         <div className="container mx-auto px-6 relative z-10 pt-20">
           <div className="max-w-4xl">
             <div className="overflow-hidden">
-              <motion.h1 
+              <motion.h1
                 initial={{ y: 100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display text-6xl md:text-8xl lg:text-9xl leading-[0.9] mb-12 tracking-tight"
+                transition={{
+                  duration: 1.2,
+                  delay: 0.2,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="font-display text-6xl md:text-8xl lg:text-8xl leading-[0.9] mb-12 tracking-tight"
               >
-                Building at the <br/>
+                Building{" "}
                 <span className="italic text-primary relative">
-                  intersection
-                  <motion.svg 
+                  ML systems
+                  <motion.svg
                     initial={{ pathLength: 0 }}
                     animate={{ pathLength: 1 }}
                     transition={{ duration: 1, delay: 1.2, ease: "easeInOut" }}
-                    viewBox="0 0 300 20" 
+                    viewBox="0 0 300 20"
                     className="absolute -bottom-2 left-0 w-full h-4 text-primary stroke-current fill-none"
                   >
                     <path d="M5 15 Q 150 5 295 15" strokeWidth="4" />
                   </motion.svg>
-                </span> of AI <br/>
-                & Healthcare.
+                </span>{" "}
+                <br />
+                from modeling to production
               </motion.h1>
             </div>
-            
-            <motion.div 
+
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
               className="max-w-2xl border-l-2 border-primary pl-8 ml-2"
             >
+              <div className="flex items-center gap-2 mb-6">
+                <span className="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="font-mono text-xs text-green-500 uppercase tracking-widest">
+                  Open to Senior / Staff ML roles · Dallas TX (open to remote)
+                </span>
+              </div>
               <p className="font-mono text-sm md:text-base text-muted-foreground leading-relaxed mb-8">
-                Founder and technology leader transforming ambitious technical concepts into commercial products. 
-                My work spans the full product lifecycle: from architecting full-stack solutions to leading teams through rigorous FDA regulatory hurdles.
+                Senior ML Engineer and data scientist specializing in production
+                ML, probabilistic modeling, real-time inference, LLM systems,
+                and MLOps. I've shipped novel algorithms from research to
+                production, built distributed data platforms, and led end-to-end
+                ML across high-stakes environments.
               </p>
               <div className="flex flex-wrap gap-4">
                 <MagneticButton className="px-6 py-3 bg-foreground text-background font-mono text-xs uppercase tracking-widest hover:bg-primary transition-colors">
-                  <a href="/ventures">View Ventures</a>
+                  <a href="/career">View Career</a>
+                </MagneticButton>
+                <MagneticButton className="px-6 py-3 border border-primary text-primary font-mono text-xs uppercase tracking-widest hover:bg-primary hover:text-background transition-colors bg-transparent">
+                  <a href="/Samyak_Shah_CV.pdf" download>Download CV</a>
                 </MagneticButton>
                 <MagneticButton className="px-6 py-3 border border-border font-mono text-xs uppercase tracking-widest hover:bg-muted transition-colors bg-transparent">
                   <a href="/blog">Read Blog</a>
@@ -174,122 +225,184 @@ export default function Home() {
         </div>
 
         {/* Dynamic Background Element - Updated */}
-      {/* Dynamic Background Element - Removed as per request */}
-
+        {/* Dynamic Background Element - Removed as per request */}
       </header>
 
       {/* Philosophy / Intro Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-12 border-b border-border">
-        <div className="md:col-span-8 p-12 md:p-24 border-b md:border-b-0 md:border-r border-border relative overflow-hidden">
-           {/* Background Grid Animation */}
-           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] mask-image-fade-bottom"></div>
-          
-          <FadeIn>
-            <h2 className="font-display text-3xl md:text-4xl mb-8">Multidisciplinary Synthesis</h2>
-            <div className="prose prose-lg text-muted-foreground font-mono leading-relaxed relative z-10">
-              <p className="mb-6">
-                My strength lies in synthesizing knowledge from disparate fields—from Biomedical Engineering and Data Science to Regulatory Affairs and UI/UX. 
-                This synthesis is the key to solving technically ambitious problems with holistic solutions.
-              </p>
-              <p>
-                I believe the most resilient products are built on this fundamental understanding of the entire technology stack, especially in complex domains like AI and regulated healthcare.
-              </p>
-            </div>
-          </FadeIn>
-        </div>
-        <div className="md:col-span-4 bg-muted/30 p-12 flex flex-col justify-center relative">
-          <div className="space-y-8 font-mono text-xs uppercase tracking-widest relative z-10">
-            <div className="group cursor-pointer">
-              <span className="block text-primary mb-2 group-hover:translate-x-2 transition-transform">Focus</span>
-              <ul className="space-y-1 text-muted-foreground">
-                {['AI/ML Architectures', 'Wearable Technology', 'Brain-Computer Interfaces', 'Regulated Environments'].map((item, i) => (
-                   <motion.li 
-                    key={item}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                   >{item}</motion.li>
-                ))}
-              </ul>
-            </div>
-            <div className="group cursor-pointer">
-              <span className="block text-primary mb-2 group-hover:translate-x-2 transition-transform">Education</span>
-              <ul className="space-y-1 text-muted-foreground">
-                <li>Johns Hopkins</li>
-                <li>Glasgow University</li>
-                <li>UC Irvine</li>
-              </ul>
+      <section className="border-b border-border">
+        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-12">
+          <div className="md:col-span-8 py-12 md:py-24 pr-12 border-b md:border-b-0 md:border-r border-border relative overflow-hidden">
+            {/* Background Grid Animation */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] mask-image-fade-bottom"></div>
+
+            <FadeIn>
+              <h2 className="font-display text-3xl md:text-4xl mb-8">
+                Engineering Rigor at Scale
+              </h2>
+              <div className="prose prose-lg text-muted-foreground font-mono leading-relaxed relative z-10">
+                <p className="mb-6">
+                  My work sits at the intersection of deep technical ML and the
+                  engineering discipline required to ship it reliably. Building
+                  in high-stakes environments forces real rigor: reproducible
+                  experiments, measurable outcomes, systems that hold up under
+                  adversarial conditions.
+                </p>
+                <p>
+                  I believe the most trustworthy ML systems are built on
+                  probabilistic thinking, careful instrumentation, and the
+                  willingness to treat every deployment as a live experiment
+                  worth measuring.
+                </p>
+              </div>
+            </FadeIn>
+          </div>
+          <div className="md:col-span-4 bg-muted/30 p-12 flex flex-col justify-center relative">
+            <div className="space-y-8 font-mono text-xs uppercase tracking-widest relative z-10">
+              <div className="group cursor-pointer">
+                <span className="block text-primary mb-2 group-hover:translate-x-2 transition-transform">
+                  Focus
+                </span>
+                <ul className="space-y-1 text-muted-foreground">
+                  {[
+                    "Production ML & MLOps",
+                    "Probabilistic & Statistical Modeling",
+                    "LLM Systems & Applied AI",
+                    "Real-Time Inference & Distributed Systems",
+                  ].map((item, i) => (
+                    <motion.li
+                      key={item}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      {item}
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+              <div className="group cursor-pointer">
+                <span className="block text-primary mb-2 group-hover:translate-x-2 transition-transform">
+                  Education
+                </span>
+                <ul className="space-y-1 text-muted-foreground">
+                  <li>Johns Hopkins</li>
+                  <li>Glasgow University</li>
+                  <li>UC Irvine</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Ventures Section */}
-      <section id="ventures" className="py-24 container mx-auto px-6 relative">
+      {/* Career Section */}
+      <section id="career" className="py-24 container mx-auto px-6 relative">
         <div className="absolute top-0 left-0 w-1 h-24 bg-primary" />
-        
+
         <FadeIn className="mb-16 flex items-end justify-between">
           <div>
-            <span className="font-mono text-primary text-xs uppercase tracking-widest mb-2 block">Featured</span>
-            <h2 className="font-display text-5xl md:text-6xl">Selected Work</h2>
+            <span className="font-mono text-primary text-xs uppercase tracking-widest mb-2 block">
+              Featured
+            </span>
+            <h2 className="font-display text-5xl md:text-6xl">
+              Career Highlights
+            </h2>
           </div>
-          <a href="/ventures" className="hidden md:flex items-center gap-2 font-mono text-xs text-muted-foreground hover:text-primary transition-colors">
-            View All Projects <ArrowUpRight className="w-4 h-4" />
+          <a
+            href="/career"
+            className="hidden md:flex items-center gap-2 font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
+          >
+            View Full Career <ArrowUpRight className="w-4 h-4" />
           </a>
         </FadeIn>
 
         <div className="flex flex-col">
-          <ProjectItem 
-            title="EpiWatch" 
-            role="Co-Founder / Head of Tech" 
+          <ProjectItem
+            title="EpiWatch"
+            role="Co-Founder / Principal ML Engineer"
             year="Current"
             description="Led development of a wearable AI platform from idea to market-ready medical device."
           />
-          <ProjectItem 
-            title="Orba" 
-            role="Founder" 
+          <ProjectItem
+            title="Orba"
+            role="Co-Founder / Applied ML Engineer"
             year="2023"
             description="Transforming ambitious technical concepts into commercial products."
           />
-          <ProjectItem 
-            title="Strides" 
-            role="Lead Engineer" 
-            year="2022"
-            description="Advanced wearable integration for gait analysis and rehabilitation monitoring."
+          <ProjectItem
+            title="JHU BCI Lab · Johns Hopkins University"
+            role="Senior Software Engineer"
+            year="2019"
+            description="Production real-time inference pipeline, neural decoding with HMMs and deep learning, and LLM-based BCI with long-term memory."
           />
           <div className="border-t border-border" />
         </div>
       </section>
 
+      {/* Achievements Strip */}
+      <section className="bg-[#0f2044] py-8">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-wrap justify-center gap-x-12 gap-y-4 font-mono text-xs uppercase tracking-widest text-blue-300/70">
+            {[
+              { value: "8", label: "Peer-Reviewed Papers" },
+              { value: "256", label: "Citations" },
+              { value: "2", label: "Patents" },
+              { value: "FDA", label: "Cleared" },
+              { value: "$300K", label: "NIH Grant" },
+              { value: "Top 4%", label: "MedTech Innovator" },
+            ].map(({ value, label }) => (
+              <div key={label} className="flex items-baseline gap-2">
+                <span className="text-white font-bold text-lg">{value}</span>
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Writing / Blog Preview */}
-      <section id="blog" className="bg-foreground text-background py-24 relative overflow-hidden" data-cursor="light">
+      <section
+        id="blog"
+        className="bg-foreground text-background py-24 relative overflow-hidden"
+        data-cursor="light"
+      >
         {/* Inverted Grid Background */}
-         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:32px_32px]"></div>
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             <div>
               <FadeIn>
-                <h2 className="font-display text-4xl mb-8">Writing & Thoughts</h2>
+                <h2 className="font-display text-4xl mb-8">
+                  Writing & Thoughts
+                </h2>
                 <p className="font-mono text-sm opacity-70 mb-8 max-w-md">
-                  I write about the lessons learned building in regulated industries, the philosophy of technology, and the mathematics behind modern AI.
+                  I write about probabilistic modeling in practice, MLOps
+                  patterns for real-world systems, LLM system design, and the
+                  engineering discipline required to ship reliable ML.
                 </p>
                 <MagneticButton className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest border border-background/20 px-6 py-3 hover:bg-background hover:text-foreground transition-colors">
-                  <a href="/blog" className="flex items-center gap-2">View All Posts <ArrowUpRight className="w-4 h-4" /></a>
+                  <a href="/blog" className="flex items-center gap-2">
+                    View All Posts <ArrowUpRight className="w-4 h-4" />
+                  </a>
                 </MagneticButton>
               </FadeIn>
             </div>
             <div className="space-y-8">
               {[
-                "The Ethics of AI in Clinical Decision Support",
-                "Architecting for FDA Approval: A Technical Guide",
-                "On the Convergence of BCI and Consumer Wearables"
+                { title: "Architecting FDA Approval", slug: "architecting-fda-approval", label: "Deep Dive" },
+                { title: "Weekly Challenge: Optimizing Transformer Inference", slug: "challenge-transformer-inference", label: "Challenge" },
+                { title: "On the Convergence of BCI and Consumer Wearables", slug: "convergence-bci-wearables", label: "Notes" },
               ].map((post, i) => (
                 <FadeIn key={i} delay={i * 0.1}>
-                  <a href="/blog" className="block group">
-                    <span className="font-mono text-xs text-primary-foreground/70 mb-2 block">Essay 0{i+1}</span>
-                    <h3 className="font-display text-2xl group-hover:underline decoration-1 underline-offset-4 decoration-primary/50">{post}</h3>
+                  <a href={`/blog/${post.slug}`} className="block group">
+                    <span className="font-mono text-xs text-primary-foreground/70 mb-2 block">
+                      {post.label}
+                    </span>
+                    <h3 className="font-display text-2xl group-hover:underline decoration-1 underline-offset-4 decoration-primary/50">
+                      {post.title}
+                    </h3>
                   </a>
                 </FadeIn>
               ))}
@@ -303,7 +416,7 @@ export default function Home() {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1">
-              <motion.div 
+              <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 whileInView={{ scale: 1, opacity: 1 }}
                 viewport={{ once: true }}
@@ -315,23 +428,33 @@ export default function Home() {
                 <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 font-mono text-xs pattern-grid-lg">
                   <div className="text-center">
                     <p>[Personal Image]</p>
-                    <p className="opacity-50 text-[10px] mt-2">Baltimore, MD</p>
+                    <p className="opacity-50 text-[10px] mt-2">Dallas, TX</p>
                   </div>
                 </div>
               </motion.div>
             </div>
             <div className="order-1 md:order-2">
               <FadeIn>
-                <h2 className="font-display text-4xl mb-8">Beyond the Screen</h2>
+                <h2 className="font-display text-4xl mb-8">
+                  Beyond the Screen
+                </h2>
                 <div className="prose font-mono text-muted-foreground">
                   <p className="mb-4">
-                    Technology alone doesn't build a successful venture. I am deeply engaged in the entire go-to-market lifecycle, from product-market fit to commercialization strategy.
+                    Technology alone doesn't build a successful venture. I am
+                    deeply engaged in the entire go-to-market lifecycle, from
+                    product-market fit to commercialization strategy.
                   </p>
                   <p className="mb-4">
-                    Outside of work, I am an avid runner and tennis player. I used to play high-level competitive cricket and soccer. In the winters, you'll find me skiing or ice-skating.
+                    Outside of work, I am an avid runner and tennis player. I
+                    used to play high-level competitive cricket and soccer. In
+                    the winters, you'll find me skiing or ice-skating.
                   </p>
                   <p>
-                    Currently based in <span className="text-foreground font-medium">Baltimore, USA</span>.
+                    Currently based in{" "}
+                    <span className="text-foreground font-medium">
+                      Dallas, TX
+                    </span>
+                    .
                   </p>
                 </div>
               </FadeIn>
@@ -341,23 +464,37 @@ export default function Home() {
       </section>
 
       {/* Footer / Contact */}
-      <footer id="contact" className="pt-32 pb-12 container mx-auto px-6 relative">
+      <footer
+        id="contact"
+        className="pt-32 pb-12 container mx-auto px-6 relative"
+      >
         <div className="max-w-4xl mb-24 relative z-10">
           <FadeIn>
-            <p className="font-mono text-sm text-primary uppercase tracking-widest mb-8">Connect</p>
+            <p className="font-mono text-sm text-primary uppercase tracking-widest mb-8">
+              Connect
+            </p>
             <h2 className="font-display text-6xl md:text-7xl leading-tight mb-12">
-              Building something ambitious? <br />
-              <a href="/contact" className="text-muted-foreground hover:text-foreground transition-colors decoration-primary underline underline-offset-8 decoration-2">Let's talk.</a>
+              Looking for a Staff or Senior ML Engineer? <br />
+              <a
+                href="/contact"
+                className="text-muted-foreground hover:text-foreground transition-colors decoration-primary underline underline-offset-8 decoration-2"
+              >
+                Let's talk.
+              </a>
             </h2>
-            
+
             <div className="flex flex-wrap gap-4 md:gap-8 font-mono text-sm">
               {[
-                { icon: Mail, label: "Email", href: "mailto:hello@samyak.shah" },
+                {
+                  icon: Mail,
+                  label: "Email",
+                  href: "mailto:hello@samyak.shah",
+                },
                 { icon: Twitter, label: "Twitter", href: "#" },
                 { icon: Linkedin, label: "LinkedIn", href: "#" },
-                { icon: Github, label: "GitHub", href: "#" }
+                { icon: Github, label: "GitHub", href: "#" },
               ].map((social) => (
-                <MagneticButton 
+                <MagneticButton
                   key={social.label}
                   className="flex items-center gap-2 border border-border px-6 py-3 hover:bg-foreground hover:text-background transition-all"
                 >
@@ -372,10 +509,14 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 border-t border-border pt-8 font-mono text-xs text-muted-foreground uppercase tracking-widest">
-          <p>&copy; 2025 Samyak Shah.</p>
+          <p>&copy; 2026 Samyak Shah.</p>
           <div className="flex gap-8">
-            <a href="/contact" className="hover:text-foreground">Contact</a>
-            <a href="#" className="hover:text-foreground">Colophon</a>
+            <a href="/contact" className="hover:text-foreground">
+              Contact
+            </a>
+            <a href="#" className="hover:text-foreground">
+              Colophon
+            </a>
           </div>
         </div>
       </footer>

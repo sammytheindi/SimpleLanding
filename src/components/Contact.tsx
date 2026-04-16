@@ -27,7 +27,7 @@ export default function Contact() {
                 Get in <br/> <span className="text-primary">Touch</span>
               </h1>
               <p className="font-mono text-lg text-muted-foreground mb-12 max-w-md leading-relaxed">
-                I'm always open to discussing new ventures, technical challenges, or just chatting about the future of BCI and AI.
+                I'm always open to discussing ML systems, data platforms, LLM applications, and hard technical problems.
               </p>
               
               <div className="space-y-8 font-mono text-sm">
@@ -47,7 +47,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Location</p>
-                    <p>Baltimore, MD (EST)</p>
+                    <p>Dallas, TX (CST)</p>
                   </div>
                 </div>
               </div>

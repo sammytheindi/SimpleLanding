@@ -17,9 +17,9 @@ export default function Navbar({ pathname }: NavbarProps) {
   }, [pathname]);
 
   const links = [
-    { name: 'Ventures & Projects', href: '/ventures' },
+    { name: 'Career', href: '/career' },
     { name: 'CV', href: '/cv' },
-    { name: 'Blog', href: '/blog' },
+{ name: 'Blog', href: '/blog' },
     { name: 'Contact', href: '/contact' },
   ];
 

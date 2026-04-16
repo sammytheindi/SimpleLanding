@@ -17,23 +17,23 @@ const SectionHeader = ({ title }: { title: string }) => (
   </motion.div>
 );
 
-const ExperienceItem = ({ 
-  role, 
-  company, 
-  period, 
-  location, 
-  children 
-}: { 
-  role: string, 
-  company: string, 
-  period: string, 
-  location: string, 
-  children: React.ReactNode 
+const ExperienceItem = ({
+  role,
+  company,
+  period,
+  location,
+  children
+}: {
+  role: string,
+  company: string,
+  period: string,
+  location: string,
+  children: React.ReactNode
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -41,8 +41,8 @@ const ExperienceItem = ({
     >
       {/* Timeline Dot */}
       <div className={`absolute -left-[9px] top-2 w-4 h-4 rounded-full border-2 transition-colors duration-300 ${isOpen ? "bg-primary border-primary" : "bg-background border-border group-hover:border-primary"}`} />
-      
-      <div 
+
+      <div
         onClick={() => setIsOpen(!isOpen)}
         className="cursor-pointer"
       >
@@ -72,9 +72,9 @@ const ExperienceItem = ({
           </motion.div>
         )}
       </AnimatePresence>
-      
+
       {!isOpen && (
-        <button 
+        <button
           onClick={() => setIsOpen(true)}
           className="text-xs font-mono uppercase tracking-widest text-primary hover:underline mt-2 flex items-center gap-2"
         >
@@ -82,7 +82,7 @@ const ExperienceItem = ({
         </button>
       )}
        {isOpen && (
-        <button 
+        <button
           onClick={() => setIsOpen(false)}
           className="text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-primary mt-4 flex items-center gap-2"
         >
@@ -141,12 +141,12 @@ export default function CV() {
               Samyak <br /> Shah
             </h1>
             <p className="font-mono text-lg md:text-xl text-primary mb-8 uppercase tracking-widest">
-              Staff Software Engineer
+              Senior ML Engineer &amp; Data Scientist
             </p>
-            
+
             <div className="flex flex-wrap gap-6 font-mono text-sm text-muted-foreground">
-               <a href="mailto:samyak.shahfamily@gmail.com" className="flex items-center gap-2 hover:text-primary transition-colors">
-                <Mail className="w-4 h-4" /> samyak.shahfamily@gmail.com
+               <a href="mailto:hello@samyak.shah" className="flex items-center gap-2 hover:text-primary transition-colors">
+                <Mail className="w-4 h-4" /> hello@samyak.shah
               </a>
               <a href="https://linkedin.com/in/samyak-shah-68410561/" target="_blank" className="flex items-center gap-2 hover:text-primary transition-colors">
                 <Linkedin className="w-4 h-4" /> LinkedIn
@@ -155,11 +155,23 @@ export default function CV() {
                 <Globe className="w-4 h-4" /> samyakshah.me
               </a>
               <span className="flex items-center gap-2">
-                <MapPin className="w-4 h-4" /> Baltimore, MD
+                <MapPin className="w-4 h-4" /> Grapevine, TX
               </span>
             </div>
           </motion.div>
-          
+
+          {/* Download Button — top right */}
+          <motion.a
+            href="/Samyak_Shah_CV.pdf"
+            download
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="absolute top-0 right-0 flex items-center gap-3 font-mono text-base px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-background transition-colors"
+          >
+            <Download className="w-5 h-5" /> Download PDF
+          </motion.a>
+
           {/* Abstract Decoration */}
           <div className="absolute -z-10 top-0 right-0 w-64 h-64 border border-border opacity-20 rotate-45 translate-x-1/3 -translate-y-1/3" />
           <div className="absolute -z-10 top-10 right-10 w-64 h-64 border border-primary opacity-10 rotate-12 translate-x-1/3 -translate-y-1/3" />
@@ -175,46 +187,87 @@ export default function CV() {
               <SectionHeader title="Experience" />
               
               <div className="space-y-8">
-                <ExperienceItem 
-                  role="Co-Founder & Head of Technology"
+                <ExperienceItem
+                  role="Co-Founder, Principal ML Engineer"
                   company="EpiWatch"
-                  period="09/2021 – Present"
-                  location="Baltimore, MD"
+                  period="Aug 2017 – Present"
+                  location="Dallas, TX"
                 >
-                  <li>Led cross-functional strategy execution, ensuring compliance with FDA regulations, referencing ISO13485/27001 standards. Completed the application 60% faster than expected.</li>
-                  <li>Implemented a company-wide software strategy, including requirements, risk analysis (FMEA), V&V testing, and a robust QMS using Greenlight Guru.</li>
-                  <li>Led development of a novel seizure detection algorithm with 10x performance improvement over market competitors. Deployed and optimized algorithm on Apple Watch, and secured international patents.</li>
-                  <li>Led full-stack development (SpringBoot, PostgreSQL, AWS CDK, XCode, Swift) to deliver production-ready EpiWatch app.</li>
-                  <li>Directed development of cybersecurity enhancements, CI/CD pipelines, and automated test protocols.</li>
-                  <li>Completed successful 2-year multi-center clinical trial for algorithm efficacy.</li>
-                  <li>Secured $300,000 in NIH funding by spearheading efforts to write a federal research grant (STTR) in 2 weeks.</li>
+                  <li>Designed novel real-time seizure detection algorithm using consumer wearable sensors — 10x improvement over prior art — FDA-cleared, validated in large-scale clinical trial.</li>
+                  <li>Designed patient-adaptive focal seizure detection using probabilistic modeling, latent-variable methods, and adaptive deep learning — secured $300K NIH STTR grant.</li>
+                  <li>510(k) technical lead — SRS, SDS, Design Controls, Risk/FMEA, SDLC, QMS — completed 60% faster than expected at under 50% of budget.</li>
+                  <li>Designed deployment strategy for per-patient adaptive system — code-promotion architecture for reduced release risk and auditability under FDA constraints.</li>
+                  <li>Built monitoring and incident-response workflows — input-data drift detection and seizure-to-detection latency via replay tests — caught hardware-induced regression pre-release.</li>
+                  <li>Built distributed Spark-based training and simulation framework — parallelized jobs reduced experiment turnaround from 1 month to 10 days.</li>
+                  <li>Implemented reproducible ML workflows with DVC, MLflow, DAGsHub — 200+ tracked experiments, comparison time reduced from days to hours.</li>
+                  <li>Evaluated classical ML models — isolation forest, XGBoost, SVM, PCA, clustering — with ROC/AUC, F1, and leave-one-user-out cross-validation.</li>
+                  <li>On-device Apple Watch algorithm optimization — CPU/memory constraints for 10+ hour battery life on older devices.</li>
+                  <li>2-year, 6-hospital clinical trial technical lead — Python/SQL reporting with automated compliance and trial blinding.</li>
+                  <li>Statistical analysis plan (with biostatistician) — binomial proportion methods for paired sensitivity analysis.</li>
+                  <li>ClickHouse time-series architecture — over 10x query improvement on ~1 TB proof-of-concept.</li>
+                  <li>Full-stack: iOS/WatchOS (Swift, Obj-C), backend (Java, Spring Boot), cloud (AWS CDK).</li>
+                  <li>CI/CD: Fastlane + Bitbucket Actions — 40% release overhead reduction.</li>
+                  <li>Selected for MedTech Innovator accelerator (4% acceptance rate).</li>
                 </ExperienceItem>
 
-                <ExperienceItem 
-                  role="Co-Founder & CEO"
+                <ExperienceItem
+                  role="Co-Founder, Applied ML Engineer"
                   company="Orba"
                   period="08/2022 – 06/2024"
-                  location="Baltimore, MD"
+                  location="Dallas, TX"
                 >
-                  <li>Developed company strategy and launched a #2 Product of the Day on Product Hunt. Accepted into Jason Calacanis’ Founder University.</li>
-                  <li>Built the company’s core AI-based event-triggered marketing product, leading development of frontend dashboard, AI sales chatbot (NextJS, Typescript), and backend architecture (Python, FastAPI, AWS).</li>
-                  <li>Engineered a self-hosted, real-time, AI voice chat system with sub-200ms latency using Whisper and local generative AI models.</li>
-                  <li>Designed a custom RAG architecture reducing LLM hallucinations by 50%.</li>
-                  <li>Led 25+ sales meetings, driving customer acquisition and revenue growth.</li>
+                  <li>Built production LLM/agentic workflows — RAG with citation support, context-aware retrieval over CRM and internal data — ~30% relevance improvement, ~50% hallucination reduction.</li>
+                  <li>Implemented NVIDIA NeMo Guardrails for safety and formatting policy enforcement.</li>
+                  <li>GPT-3.5 fine-tuning + LangChain prompt-chaining — 15% task completion improvement.</li>
+                  <li>Built self-hosted real-time AI voice system — sub-200ms latency — Whisper transcription + retrieval + generation.</li>
+                  <li>Backend/infra: FastAPI, AWS, PostgreSQL, MongoDB — distributed web-scraping system.</li>
+                  <li>#2 Product of the Day on Product Hunt; accepted into Jason Calacanis’ Founder University; featured in industry newsletters.</li>
                 </ExperienceItem>
 
-                <ExperienceItem 
+                <ExperienceItem
                   role="Senior Software Engineer"
                   company="Johns Hopkins University"
                   period="06/2019 – 06/2024"
                   location="Baltimore, MD"
                 >
-                  <li>Implemented Agile methodology for the research group, improving efficiency by 30%.</li>
-                  <li>Developed a user-facing web application (NAVI) for ALS patients to enable communication and control through neural decoding (Next.js, TypeScript).</li>
-                  <li>Led development of an LLM-based Brain Computer Interface (BCI) application with long-term memory (Python, Next.js, C++).</li>
-                  <li>Built a real-time audio-visualization tool for voice synthesis modeling with WebRTC.</li>
-                  <li>Developed a production-ready end-to-end modeling pipeline and real-time inference pipeline (sub-70ms latency).</li>
-                  <li>Published 8 peer-reviewed articles (64 citations) and presented research at SfN 2023.</li>
+                  <li>Implemented Agile methodology for the research group — 30% efficiency improvement.</li>
+                  <li>Built real-time brain-signal decoding models for cursor control — HMM + deep learning — Kedro-based pipeline.</li>
+                  <li>Applied Bayesian and probabilistic methods including MCMC — posterior analysis for parameter uncertainty and model robustness across datasets.</li>
+                  <li>Led development of LLM-based BCI application with long-term memory — collaboration with JHU APL — presented at SfN 2023.</li>
+                  <li>Built production modeling + real-time inference pipeline — sub-70ms latency — Python/C++ — scalable across multiple decoding pipelines.</li>
+                  <li>Built React/Next.js interfaces for neural decoding and ALS patient communication.</li>
+                  <li>Built real-time WebRTC audio visualization for voice synthesis — C++ + Next.js — primary interface for speech synthesis training.</li>
+                  <li>8 peer-reviewed papers, 256 citations, SfN 2023.</li>
+                </ExperienceItem>
+
+                <ExperienceItem
+                  role="Systems Engineer"
+                  company="Philips Healthcare"
+                  period="Jun 2016 – Sep 2016"
+                  location="Internship"
+                >
+                  <li>Next-generation diagnostic imaging systems and workflow optimization.</li>
+                </ExperienceItem>
+
+                <ExperienceItem
+                  role="Research & Development"
+                  company="InCube Labs"
+                  period="Aug 2015 – Sep 2015"
+                  location="Internship"
+                >
+                  <li>Worked as part of Rani Therapeutics on an ingestible capsule to replace injectables during animal testing.</li>
+                  <li>Designed and fabricated capsule components using SolidWorks and an in-house laser-cutter.</li>
+                  <li>Tested injection system mechanics and performed sensitive bio-assays of serum from animal testing to evaluate delivery efficacy.</li>
+                </ExperienceItem>
+
+                <ExperienceItem
+                  role="Research & Development"
+                  company="InCube Labs"
+                  period="Jul 2014 – Sep 2014"
+                  location="Internship"
+                >
+                  <li>Reviewed viability of animal models for stimulating natural incretin secretion.</li>
+                  <li>Performed ELISA assays and operated HPLC, PCR, and related sensitive equipment.</li>
                 </ExperienceItem>
               </div>
             </section>
@@ -225,8 +278,13 @@ export default function CV() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
                   {
+                    title: "Strides",
+                    stars: "Lead Engineer",
+                    desc: "Advanced wearable integration for gait analysis and rehabilitation monitoring."
+                  },
+                  {
                     title: "JobFunnel",
-                    stars: "2k stars",
+                    stars: "★ 5.3k stars",
                     desc: "Contributor to a community-driven project for scraping job applications. Provided novel method for bypassing CAPTCHA restrictions."
                   },
                   {
@@ -238,9 +296,14 @@ export default function CV() {
                     title: "Gamified Inhaler",
                     stars: "Prototype",
                     desc: "Developed a smart inhaler prototype with biosensors rewarding correct technique via on-screen feedback. 3D-printed custom components."
-                  }
+                  },
+                  {
+                    title: "SensUs Biosensor · University of Glasgow",
+                    stars: "Technical Lead",
+                    desc: "SAW wave biosensor for point-of-care NT-ProBNP detection using MEMS microfabrication and integrated circuits with a phase-locked loop."
+                  },
                 ].map((p, i) => (
-                  <motion.a 
+                  <motion.a
                     key={p.title}
                     href="#"
                     initial={{ opacity: 0, y: 20 }}
@@ -265,13 +328,13 @@ export default function CV() {
               </div>
             </section>
 
-             {/* Patents & Talks */}
+             {/* Patents, Talks & Papers */}
              <section className="mb-24">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 <div>
                   <SectionHeader title="Patents" />
                   <ul className="space-y-6">
-                    <motion.li 
+                    <motion.li
                       initial={{ opacity: 0, x: -10 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
@@ -279,9 +342,9 @@ export default function CV() {
                       className="group"
                     >
                       <h4 className="font-bold mb-1 group-hover:text-primary transition-colors">Physiological detection and alerting</h4>
-                      <p className="text-sm text-muted-foreground">Patent (pending) for novel method of seizure detection and alerting using biosensor data.</p>
+                      <p className="text-sm text-muted-foreground">Inventor (royalty-bearing), patent published — novel method of seizure detection and alerting using biosensor data.</p>
                     </motion.li>
-                    <motion.li 
+                    <motion.li
                       initial={{ opacity: 0, x: -10 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
@@ -289,14 +352,14 @@ export default function CV() {
                       className="group"
                     >
                       <h4 className="font-bold mb-1 group-hover:text-primary transition-colors">Neurally Augmented Virtual Interface</h4>
-                      <p className="text-sm text-muted-foreground">Patent (pending) for a novel control interface for paralyzed individuals and patients with ALS.</p>
+                      <p className="text-sm text-muted-foreground">Co-inventor, patent pending — novel control interface for paralyzed individuals and patients with ALS.</p>
                     </motion.li>
                   </ul>
                 </div>
                 <div>
                   <SectionHeader title="Talks" />
                   <ul className="space-y-6">
-                    <motion.li 
+                    <motion.li
                       initial={{ opacity: 0, x: -10 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
@@ -304,9 +367,9 @@ export default function CV() {
                       className="group"
                     >
                       <h4 className="font-bold mb-1 group-hover:text-primary transition-colors">Speaker at SfN 2023</h4>
-                      <p className="text-sm text-muted-foreground">Spoke to 200 people at Society for Neuroscience conference on using LLMs for Brain Computer Interface (BCI) applications.</p>
+                      <p className="text-sm text-muted-foreground">Spoke to 200+ attendees at Society for Neuroscience on using LLMs for Brain Computer Interface (BCI) applications.</p>
                     </motion.li>
-                    <motion.li 
+                    <motion.li
                       initial={{ opacity: 0, x: -10 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
@@ -314,10 +377,87 @@ export default function CV() {
                       className="group"
                     >
                       <h4 className="font-bold mb-1 group-hover:text-primary transition-colors">Founder University 2023</h4>
-                      <p className="text-sm text-muted-foreground">Spoke to 150 founder university participants about Orba, and automating inbound marketing.</p>
+                      <p className="text-sm text-muted-foreground">Spoke to 150 Founder University participants about Orba and automating inbound marketing with LLMs.</p>
                     </motion.li>
                   </ul>
                 </div>
+              </div>
+              <div className="mt-12">
+                <SectionHeader title="Papers" />
+                {(() => {
+                  const papers = [
+                    {
+                      title: "Online speech synthesis using a chronically implanted brain–computer interface in an individual with ALS",
+                      authors: "M Angrick, S Luo, Q Rabbani, DN Candrea, S Shah, GW Milsap, et al.",
+                      venue: "Scientific Reports",
+                      year: "2024",
+                    },
+                    {
+                      title: "Stable decoding from a speech BCI enables control for an individual with ALS without recalibration for 3 months",
+                      authors: "S Luo, M Angrick, C Coogan, DN Candrea, K Wyse‐Sookoo, S Shah, et al.",
+                      venue: "Advanced Science",
+                      year: "2023",
+                    },
+                    {
+                      title: "A click-based electrocorticographic brain-computer interface enables long-term high-performance switch scan spelling",
+                      authors: "DN Candrea, S Shah, S Luo, M Angrick, Q Rabbani, C Coogan, et al.",
+                      venue: "Communications Medicine",
+                      year: "2024",
+                    },
+                    {
+                      title: "Prospective multicenter study of continuous tonic-clonic seizure monitoring on Apple Watch in epilepsy monitoring units and ambulatory environments",
+                      authors: "S Shah, EG Gutierrez, JL Hopp, J Wheless, A Gil-Nagel, GL Krauss, et al.",
+                      venue: "Epilepsy & Behavior",
+                      year: "2024",
+                    },
+                    {
+                      title: "Seizure triggers identified postictally using a smart watch reporting system",
+                      authors: "A Ge, EG Gutierrez, SW Lee, S Shah, Y Carmenate, M Collard, NE Crone, et al.",
+                      venue: "Epilepsy & Behavior",
+                      year: "2022",
+                    },
+                    {
+                      title: "Iterative alignment discovery of speech-associated neural activity",
+                      authors: "Q Rabbani, S Shah, G Milsap, M Fifer, H Hermansky, N Crone",
+                      venue: "Journal of Neural Engineering",
+                      year: "2024",
+                    },
+                    {
+                      title: "On-chip magnetoresistive sensors for detection and localization of paramagnetic particles",
+                      authors: "S Shah, H Heidari",
+                      venue: "2017 IEEE SENSORS",
+                      year: "2017",
+                    },
+                    {
+                      title: "Development of a real-time smartwatch algorithm for the detection of generalized tonic-clonic seizures",
+                      authors: "S Shah",
+                      venue: "Johns Hopkins University (Thesis)",
+                      year: "2019",
+                    },
+                  ];
+                  return (
+                    <ul className="space-y-6">
+                      {papers.map((p, i) => (
+                        <motion.li
+                          key={i}
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: 0.1 * (i + 1) }}
+                          className="group"
+                        >
+                          <h4 className="font-bold mb-1 group-hover:text-primary transition-colors">{p.title}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {p.authors.split("S Shah").map((part, j, arr) => (
+                              <span key={j}>{part}{j < arr.length - 1 && <strong className="text-foreground">S Shah</strong>}</span>
+                            ))}
+                            {" — "}<em>{p.venue}</em>, {p.year}
+                          </p>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  );
+                })()}
               </div>
             </section>
 
@@ -354,38 +494,52 @@ export default function CV() {
             {/* Skills */}
             <section>
               <SectionHeader title="Skills" />
-              <motion.div 
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                variants={{
-                  hidden: { opacity: 0 },
-                  show: {
-                    opacity: 1,
-                    transition: {
-                      staggerChildren: 0.05
-                    }
-                  }
-                }}
-                className="flex flex-wrap gap-2"
-              >
+              <div className="space-y-6">
                 {[
-                  "Python", "Pandas", "MATLAB", "Javascript", "TypeScript", "NextJS", "React", "Vue",
-                  "AWS", "Azure", "MongoDB", "TensorFlow", "PyTorch", "SciKit Learn", 
-                  "Deep Learning", "Swift", "XCode", "LangChain", "Java", "SpringBoot", "C++",
-                  "Kedro", "FastAPI", "Flask", "CI/CD", "Cybersecurity", "Gen AI",
-                  "Medical Devices", "QMS", "Startups"
-                ].map(skill => (
-                  <SkillTag 
-                    key={skill} 
-                    name={skill} 
-                    variants={{
-                      hidden: { opacity: 0, y: 10 },
-                      show: { opacity: 1, y: 0 }
-                    }}
-                  />
+                  {
+                    category: "Modeling & Data Science",
+                    skills: ["Python", "scikit-learn", "PyTorch", "TensorFlow", "XGBoost", "Random Forest", "Isolation Forest", "SVM", "PCA", "Clustering", "HMMs", "MCMC", "Bayesian Modeling", "Adaptive Deep Learning", "Statistical Analysis", "Experimental Design"]
+                  },
+                  {
+                    category: "ML Systems & MLOps",
+                    skills: ["MLflow", "DVC", "DAGsHub", "Spark", "ClickHouse", "Model Monitoring", "Drift Detection", "Experiment Tracking", "Real-Time Inference", "MLOps Pipelines"]
+                  },
+                  {
+                    category: "LLM / Applied AI",
+                    skills: ["RAG", "Prompt Orchestration", "Fine-Tuning", "LangChain", "NeMo Guardrails", "Context-Aware Retrieval", "Citation-Grounded Generation", "Whisper"]
+                  },
+                  {
+                    category: "Backend / Cloud",
+                    skills: ["AWS", "AWS CDK", "FastAPI", "Flask", "Spring Boot", "PostgreSQL", "MongoDB", "REST APIs", "CI/CD", "Bitbucket Actions", "Fastlane"]
+                  },
+                  {
+                    category: "Frontend / Product",
+                    skills: ["TypeScript", "Next.js", "React", "Swift", "Xcode", "Objective-C"]
+                  }
+                ].map(({ category, skills }) => (
+                  <div key={category}>
+                    <p className="font-mono text-xs uppercase tracking-widest text-primary mb-2">{category}</p>
+                    <motion.div
+                      initial="hidden"
+                      whileInView="show"
+                      viewport={{ once: true }}
+                      variants={{
+                        hidden: { opacity: 0 },
+                        show: { opacity: 1, transition: { staggerChildren: 0.03 } }
+                      }}
+                      className="flex flex-wrap gap-2"
+                    >
+                      {skills.map(skill => (
+                        <SkillTag
+                          key={skill}
+                          name={skill}
+                          variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0 } }}
+                        />
+                      ))}
+                    </motion.div>
+                  </div>
                 ))}
-              </motion.div>
+              </div>
             </section>
           </div>
 
