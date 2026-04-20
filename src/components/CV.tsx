@@ -128,7 +128,7 @@ export default function CV() {
       
       <Navbar />
 
-      <div className="container mx-auto px-6 pt-32 pb-24">
+      <div className="container mx-auto px-6 pt-40 pb-24">
         
         {/* Header */}
         <header className="mb-24 relative">

@@ -30,7 +30,21 @@ export default function Navbar({ pathname }: NavbarProps) {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-background/90 backdrop-blur-sm border-b border-border supports-[backdrop-filter]:bg-background/60 text-foreground">
+      {/* Announcement strip */}
+      <div className="fixed top-0 left-0 right-0 z-50 h-10 bg-green-700 border-b border-green-600">
+        <div className="container mx-auto px-6 h-full flex items-center justify-center gap-3">
+          <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-300 animate-pulse flex-shrink-0" />
+          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-white">
+            Open to Senior / Staff ML roles · Dallas TX · Open to remote
+          </span>
+          <span className="text-green-400 font-mono text-[10px]">·</span>
+          <a href="/contact" className="font-mono text-[10px] font-bold uppercase tracking-widest text-white underline underline-offset-2 decoration-green-400 hover:text-green-200 transition-colors whitespace-nowrap">
+            Let's talk →
+          </a>
+        </div>
+      </div>
+
+      <nav className="fixed top-10 left-0 right-0 z-40 bg-background/90 backdrop-blur-sm border-b border-border supports-[backdrop-filter]:bg-background/60 text-foreground">
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
           <a href="/" className="text-lg font-display font-bold tracking-tighter z-50 text-foreground hover:text-primary transition-colors">
             SAMYAK SHAH

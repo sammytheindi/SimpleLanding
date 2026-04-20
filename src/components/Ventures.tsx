@@ -53,7 +53,7 @@ export default function Ventures() {
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
       <Navbar />
       
-      <div className="container mx-auto px-6 pt-32 pb-24">
+      <div className="container mx-auto px-6 pt-40 pb-24">
         <header className="mb-24">
           <FadeIn>
             <h1 className="font-display text-6xl md:text-8xl mb-8">

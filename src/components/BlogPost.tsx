@@ -20,7 +20,7 @@ export default function BlogPost({ post, children }: BlogPostProps) {
       
       <Navbar />
 
-      <article className="container mx-auto px-6 pt-32 pb-24 max-w-4xl">
+      <article className="container mx-auto px-6 pt-40 pb-24 max-w-4xl">
         
         <header className="mb-16 text-center">
           <a href="/blog" className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors mb-8">

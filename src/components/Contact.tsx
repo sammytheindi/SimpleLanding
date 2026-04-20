@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, MapPin, Linkedin, Github, Twitter } from "lucide-react";
 import Navbar from "./Navbar";
@@ -15,11 +16,30 @@ const FadeIn = ({ children, delay = 0, className = "" }: { children: React.React
 );
 
 export default function Contact() {
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("sending");
+    const form = e.currentTarget;
+    try {
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(new FormData(form) as any).toString(),
+      });
+      setStatus("success");
+      form.reset();
+    } catch {
+      setStatus("error");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
       <Navbar />
       
-      <div className="container mx-auto px-6 pt-32 pb-24">
+      <div className="container mx-auto px-6 pt-40 pb-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
           <div>
             <FadeIn>
@@ -72,21 +92,28 @@ export default function Contact() {
           <div className="bg-muted/20 p-8 md:p-12 border border-border h-fit">
              <FadeIn delay={0.2}>
                 <h2 className="font-display text-2xl mb-6">Send a message</h2>
-                <form className="space-y-6">
+                <form name="contact" method="POST" data-netlify="true" className="space-y-6" onSubmit={handleSubmit}>
+                  <input type="hidden" name="form-name" value="contact" />
                   <div className="space-y-2">
                     <label className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Name</label>
-                    <input type="text" className="w-full bg-background border border-border p-4 focus:outline-none focus:border-primary transition-colors" placeholder="Jane Doe" />
+                    <input required type="text" name="name" className="w-full bg-background border border-border p-4 focus:outline-none focus:border-primary transition-colors" placeholder="Jane Doe" />
                   </div>
                   <div className="space-y-2">
                     <label className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Email</label>
-                    <input type="email" className="w-full bg-background border border-border p-4 focus:outline-none focus:border-primary transition-colors" placeholder="jane@example.com" />
+                    <input required type="email" name="email" className="w-full bg-background border border-border p-4 focus:outline-none focus:border-primary transition-colors" placeholder="jane@example.com" />
                   </div>
                   <div className="space-y-2">
                     <label className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Message</label>
-                    <textarea rows={5} className="w-full bg-background border border-border p-4 focus:outline-none focus:border-primary transition-colors" placeholder="Tell me about your project..." />
+                    <textarea required rows={5} name="message" className="w-full bg-background border border-border p-4 focus:outline-none focus:border-primary transition-colors" placeholder="Tell me about your project..." />
                   </div>
-                  <button className="w-full bg-foreground text-background font-mono text-xs uppercase tracking-widest py-4 hover:bg-primary transition-colors">
-                    Send Message
+                  {status === "success" && (
+                    <p className="font-mono text-xs text-green-600 uppercase tracking-widest">Message sent — I'll be in touch soon.</p>
+                  )}
+                  {status === "error" && (
+                    <p className="font-mono text-xs text-red-500 uppercase tracking-widest">Something went wrong. Try emailing me directly.</p>
+                  )}
+                  <button disabled={status === "sending"} className="w-full bg-foreground text-background font-mono text-xs uppercase tracking-widest py-4 hover:bg-primary transition-colors disabled:opacity-50">
+                    {status === "sending" ? "Sending..." : "Send Message"}
                   </button>
                 </form>
              </FadeIn>

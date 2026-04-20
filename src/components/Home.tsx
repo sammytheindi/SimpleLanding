@@ -112,7 +112,7 @@ const DotMatrixPhoto = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const W = 520, H = 693, STEP = 3;
+    const W = 520, H = 693;
 
     const img = new Image();
     img.src = "/profile-transparent.png";
@@ -121,7 +121,6 @@ const DotMatrixPhoto = () => {
       off.width = W; off.height = H;
       const offCtx = off.getContext("2d")!;
 
-      // object-cover object-top: fill canvas, crop sides if image is wider
       const imgAspect = img.naturalWidth / img.naturalHeight;
       const canvasAspect = W / H;
       let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
@@ -130,68 +129,23 @@ const DotMatrixPhoto = () => {
         sx = (img.naturalWidth - sw) / 2;
       } else {
         sh = img.naturalWidth / canvasAspect;
-        sy = 0; // object-top: anchor to top
+        sy = 0;
       }
       offCtx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
-      const { data } = offCtx.getImageData(0, 0, W, H);
+      const primary = getComputedStyle(document.documentElement)
+        .getPropertyValue("--primary").trim() || "220 100% 20%";
 
-      type Dot = { x: number; y: number; brightness: number; alpha: number; r: number; g: number; b: number };
-      const dots: Dot[] = [];
-      for (let y = 0; y < H; y += STEP) {
-        for (let x = 0; x < W; x += STEP) {
-          const i = (y * W + x) * 4;
-          const alpha = data[i + 3] / 255;
-          if (alpha < 0.15) continue;
-          const rr = data[i], gg = data[i + 1], bb = data[i + 2];
-          const brightness = (rr * 0.299 + gg * 0.587 + bb * 0.114) / 255;
-          if (brightness < 0.05) continue;
-          dots.push({ x, y, brightness, alpha, r: rr, g: gg, b: bb });
-        }
-      }
-
-      // Persistent canvas for the face circle overlay
-      const vertCanvas = document.createElement("canvas");
-      vertCanvas.width = W; vertCanvas.height = H;
-      const vCtx = vertCanvas.getContext("2d")!;
-
-      let t = 0;
       const draw = () => {
         ctx.clearRect(0, 0, W, H);
-        t += 0.018;
-        const mx = mouseRef.current.x, my = mouseRef.current.y;
-
-        // Draw animated dot matrix — dots near cursor grow larger
-        for (const { x, y, brightness, alpha, r: pr, g: pg, b: pb } of dots) {
-          const wave = (
-            Math.sin(x * 0.04 + y * 0.02 + t * 0.9) * 0.2 +
-            Math.sin(x * 0.015 - y * 0.05 + t * 1.3) * 0.15 +
-            Math.sin(x * 0.07 + y * 0.03 - t * 0.7) * 0.1
-          );
-          const dist = Math.hypot(x - mx, y - my);
-          const faceDist = Math.hypot(mx - W * 0.55, my - H * 0.32);
-          const faceMute = Math.min(1, faceDist / (W * 0.32));
-          const boost = dist < 160 ? (1 - dist / 160) * 3.5 * faceMute : 0;
-          const radius = Math.max(0.8, (0.4 + brightness * 2.4) * (2.2 + wave + boost));
-          const opacity = alpha * (0.75 + brightness * 0.25);
-
-          ctx.beginPath();
-          ctx.arc(x, y, radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${pr}, ${pg}, ${pb}, ${opacity})`;
-          ctx.fill();
-        }
-
-        // Fixed face circle — clear photo over the face, dots everywhere else
-        vCtx.clearRect(0, 0, W, H);
-        vCtx.drawImage(off, 0, 0);
-        vCtx.globalCompositeOperation = "destination-in";
-        const faceGrad = vCtx.createRadialGradient(W * 0.55, H * 0.32, 0, W * 0.55, H * 0.32, W * 0.32);
-        faceGrad.addColorStop(0,   "rgba(0,0,0,1)");
-        faceGrad.addColorStop(0.7, "rgba(0,0,0,1)");
-        faceGrad.addColorStop(1,   "rgba(0,0,0,0)");
-        vCtx.fillStyle = faceGrad;
-        vCtx.fillRect(0, 0, W, H);
-        vCtx.globalCompositeOperation = "source-over";
-        ctx.drawImage(vertCanvas, 0, 0);
+        // Draw grayscale
+        ctx.filter = "grayscale(1) brightness(1.9)";
+        ctx.drawImage(off, 0, 0);
+        ctx.filter = "none";
+        // Navy tint only over the silhouette
+        ctx.globalCompositeOperation = "source-atop";
+        ctx.fillStyle = "hsl(220 70% 15% / 0.5)";
+        ctx.fillRect(0, 0, W, H);
+        ctx.globalCompositeOperation = "source-over";
 
         rafRef.current = requestAnimationFrame(draw);
       };
@@ -358,7 +312,7 @@ export default function Home() {
           <EEGBackground lineCount={15} opacity={0.075} />
         </motion.div>
 
-        <div className="container mx-auto px-6 relative z-10 pt-36 md:pt-20 pb-16 md:pb-0">
+        <div className="container mx-auto px-6 relative z-10 pt-48 md:pt-32 pb-16 md:pb-0">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
           <div className="max-w-2xl">
             <div className="overflow-hidden">
@@ -396,12 +350,6 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
               className="max-w-2xl border-l-2 border-primary pl-8 ml-2"
             >
-              <div className="flex items-center gap-2 mb-6">
-                <span className="inline-block w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <span className="font-mono text-xs text-green-500 uppercase tracking-widest">
-                  Open to Senior / Staff ML roles · Dallas TX (open to remote)
-                </span>
-              </div>
               <p className="font-mono text-sm md:text-base text-muted-foreground leading-relaxed mb-8">
                 Senior ML Engineer and data scientist specializing in production
                 ML, probabilistic modeling, real-time inference, LLM systems,
