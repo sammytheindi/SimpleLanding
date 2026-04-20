@@ -34,8 +34,11 @@ export default function Navbar({ pathname }: NavbarProps) {
       <div className="fixed top-0 left-0 right-0 z-50 h-10 bg-green-700 border-b border-green-600">
         <div className="container mx-auto px-6 h-full flex items-center justify-center gap-3">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-300 animate-pulse flex-shrink-0" />
-          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-white">
+          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-white hidden sm:inline">
             Open to Senior / Staff ML roles · Dallas TX · Open to remote
+          </span>
+          <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-white sm:hidden">
+            Open to Senior / Staff ML roles
           </span>
           <span className="text-green-400 font-mono text-[10px]">·</span>
           <a href="/contact" onClick={() => window.posthog?.capture("lets_talk_cta_clicked")} className="font-mono text-[10px] font-bold uppercase tracking-widest text-white underline underline-offset-2 decoration-green-400 hover:text-green-200 transition-colors whitespace-nowrap">

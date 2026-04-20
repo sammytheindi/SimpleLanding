@@ -246,7 +246,7 @@ export default function Home() {
           <EEGBackground lineCount={15} opacity={0.075} />
         </motion.div>
 
-        <div className="container mx-auto px-6 relative z-10 pt-56 md:pt-32 pb-16 md:pb-0">
+        <div className="hero-content container mx-auto px-6 relative z-10 pb-16 md:pb-0 md:pt-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
           <div className="max-w-2xl">
             <div className="overflow-hidden">

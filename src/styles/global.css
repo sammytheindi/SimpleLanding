@@ -144,6 +144,13 @@
 }
 
 /* Utility for grid pattern */
+/* Hero section: ensure content clears the fixed navbar (h-10 announcement + h-20 nav = 120px) on mobile */
+@media (max-width: 767px) {
+  .hero-content {
+    padding-top: 10rem; /* 160px — clears 120px navbar with comfortable breathing room */
+  }
+}
+
 .pattern-grid-lg {
   background-image: linear-gradient(to right, currentColor 1px, transparent 1px),
     linear-gradient(to bottom, currentColor 1px, transparent 1px);
