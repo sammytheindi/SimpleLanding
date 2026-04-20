@@ -126,36 +126,35 @@ export default function EEGBackground({
       lines.forEach((line) => {
         ctx.beginPath();
         
-        for (let x = 0; x < canvas.width; x += 4) {
-          // Complex wave composition
+        const step = 8;
+        const points: { x: number; y: number }[] = [];
+
+        for (let x = 0; x <= canvas.width; x += step) {
           const baseWave = Math.sin(x * line.frequency + time * line.speed + line.offset);
           const detailWave = Math.sin(x * line.secondaryFreq - time * (line.speed * 2)) * 0.5;
-          const noise = (Math.random() - 0.5) * 2;
-          
-          let y = line.yBase + (baseWave + detailWave) * line.amplitude + noise;
+          let y = line.yBase + (baseWave + detailWave) * line.amplitude;
 
-          // Interaction for Shape Distortion
           const dx = x - mouseRef.current.x;
           const dy = y - mouseRef.current.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           const interactionRadius = 200;
-
           if (distance < interactionRadius) {
             const force = (interactionRadius - distance) / interactionRadius;
-            // Slower and closer to original wave shape
-            const excitement = Math.sin(x * 0.05 + time * 0.1) * 10 * force; 
-            y += excitement;
-            
-            // Gentle repulsion/attraction
+            y += Math.sin(x * 0.05 + time * 0.1) * 10 * force;
             y += (mouseRef.current.y - y) * 0.02 * force;
           }
 
-          if (x === 0) {
-            ctx.moveTo(x, y);
-          } else {
-            ctx.lineTo(x, y);
-          }
+          points.push({ x, y });
         }
+
+        ctx.moveTo(points[0].x, points[0].y);
+        for (let i = 1; i < points.length - 1; i++) {
+          const mx = (points[i].x + points[i + 1].x) / 2;
+          const my = (points[i].y + points[i + 1].y) / 2;
+          ctx.quadraticCurveTo(points[i].x, points[i].y, mx, my);
+        }
+        const last = points[points.length - 1];
+        ctx.lineTo(last.x, last.y);
         ctx.stroke();
       });
 
