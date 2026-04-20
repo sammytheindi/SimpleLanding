@@ -160,14 +160,14 @@ export default function CV() {
             </div>
           </motion.div>
 
-          {/* Download Button — top right */}
+          {/* Download Button — top right on desktop, below header on mobile */}
           <motion.a
             href="/Samyak_Shah_CV.pdf"
             download
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="absolute top-0 right-0 flex items-center gap-3 font-mono text-base px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-background transition-colors"
+            className="md:absolute md:top-0 md:right-0 mt-8 md:mt-0 inline-flex items-center gap-3 font-mono text-base px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-background transition-colors"
           >
             <Download className="w-5 h-5" /> Download PDF
           </motion.a>

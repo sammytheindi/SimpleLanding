@@ -98,6 +98,34 @@ export const ProjectItem = ({
   );
 };
 
+// --- Hero Photo Component ---
+
+const HeroPhoto = () => (
+  <motion.div
+    initial={{ opacity: 0, x: 40 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 1.0, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+    className="relative w-72 xl:w-80"
+  >
+    {/* Grid overlay — matches the site's grid pattern aesthetic */}
+    <div className="absolute inset-0 z-10 bg-[linear-gradient(to_right,#80808018_1px,transparent_1px),linear-gradient(to_bottom,#80808018_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+
+    {/* Primary color tint overlay — ties photo into the navy palette */}
+    <div className="absolute inset-0 z-10 bg-primary/10 mix-blend-multiply pointer-events-none" />
+
+    {/* The photo itself */}
+    <img
+      src="/profile.png"
+      alt="Samyak Shah"
+      className="w-full aspect-[3/4] object-cover object-top grayscale hover:grayscale-0 transition-all duration-500 border border-border"
+    />
+
+    {/* Decorative corner accents */}
+    <div className="absolute -bottom-3 -right-3 w-16 h-16 border border-primary/40 -z-10" />
+    <div className="absolute -top-3 -left-3 w-8 h-8 border border-border -z-10" />
+  </motion.div>
+);
+
 // --- Background Animation Component ---
 
 const HeroBackground = () => {
@@ -148,19 +176,20 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <header className="relative min-h-[95vh] flex flex-col justify-center border-b border-border overflow-hidden">
+      <header className="relative min-h-[95vh] flex flex-col justify-start md:justify-center border-b border-border overflow-x-hidden">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute inset-0"
+          className="absolute inset-0 overflow-hidden"
         >
           <HeroBackground />
           <EEGBackground lineCount={15} opacity={0.075} />
         </motion.div>
 
-        <div className="container mx-auto px-6 relative z-10 pt-20">
-          <div className="max-w-4xl">
+        <div className="container mx-auto px-6 relative z-10 pt-36 md:pt-20 pb-16 md:pb-0">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="max-w-2xl">
             <div className="overflow-hidden">
               <motion.h1
                 initial={{ y: 100, opacity: 0 }}
@@ -222,6 +251,10 @@ export default function Home() {
               </div>
             </motion.div>
           </div>
+          <div className="hidden lg:flex justify-end">
+            <HeroPhoto />
+          </div>
+          </div>
         </div>
 
         {/* Dynamic Background Element - Updated */}
@@ -231,7 +264,7 @@ export default function Home() {
       {/* Philosophy / Intro Grid */}
       <section className="border-b border-border">
         <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-12">
-          <div className="md:col-span-8 py-12 md:py-24 pr-12 border-b md:border-b-0 md:border-r border-border relative overflow-hidden">
+          <div className="md:col-span-8 py-12 md:py-24 pr-0 md:pr-12 border-b md:border-b-0 md:border-r border-border relative overflow-hidden">
             {/* Background Grid Animation */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:40px_40px] mask-image-fade-bottom"></div>
 
@@ -256,7 +289,7 @@ export default function Home() {
               </div>
             </FadeIn>
           </div>
-          <div className="md:col-span-4 bg-muted/30 p-12 flex flex-col justify-center relative">
+          <div className="md:col-span-4 bg-muted/30 py-10 md:p-12 flex flex-col justify-center relative">
             <div className="space-y-8 font-mono text-xs uppercase tracking-widest relative z-10">
               <div className="group cursor-pointer">
                 <span className="block text-primary mb-2 group-hover:translate-x-2 transition-transform">

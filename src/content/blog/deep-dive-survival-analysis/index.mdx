@@ -1,0 +1,39 @@
+---
+title: "Survival Analysis: Deep Dive"
+date: "Sep 12, 2026"
+readTime: "12 min read"
+category: "Deep Dives"
+excerpt: "A deep dive into Survival Analysis, and how it works"
+---
+
+Many startups treat FDA compliance as a paperwork exercise to be completed after the product is built. This is a fatal mistake. Compliance is an engineering constraint, not just a legal one.
+
+### Design Controls as Engineering Artifacts
+
+In the software world, we talk about requirements, specifications, and tests. The FDA uses specific language: User Needs, Design Inputs, Design Outputs, and Verification/Validation.
+
+- **User Needs:** What problem are we solving? (e.g., "User needs to know when a seizure occurs.")
+- **Design Input:** The technical requirement. (e.g., "System shall detect tonic-clonic motion with >90% sensitivity.")
+- **Design Output:** The code/architecture. (e.g., The specific Python classifier module.)
+
+## Automating Traceability
+
+The Traceability Matrix links these three together. Manual matrices are brittle. We implemented automated traceability by linking Jira tickets (Requirements) to GitHub PRs (Implementation) and Xray Tests (Verification). This allows us to generate a real-time compliance matrix with every build.
+
+![My Image](./images/SoftwareDevelopmentRisk.png)
+
+Many startups treat FDA compliance as a paperwork exercise to be completed after the product is built. This is a fatal mistake. Compliance is an engineering constraint, not just a legal one.
+
+### Design Controls as Engineering Artifacts
+
+In the software world, we talk about requirements, specifications, and tests. The FDA uses specific language: User Needs, Design Inputs, Design Outputs, and Verification/Validation.
+
+- **User Needs:** What problem are we solving? (e.g., "User needs to know when a seizure occurs.")
+- **Design Input:** The technical requirement. (e.g., "System shall detect tonic-clonic motion with >90% sensitivity.")
+- **Design Output:** The code/architecture. (e.g., The specific Python classifier module.)
+
+### Automating Traceability
+
+The Traceability Matrix links these three together. Manual matrices are brittle. We implemented automated traceability by linking Jira tickets (Requirements) to GitHub PRs (Implementation) and Xray Tests (Verification). This allows us to generate a real-time compliance matrix with every build.
+
+![My Image](./images/SoftwareDevelopmentRisk.png)
