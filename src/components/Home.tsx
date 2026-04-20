@@ -162,13 +162,17 @@ const DotMatrixPhoto = () => {
 
         // Draw animated dot matrix — dots near cursor grow larger
         for (const { x, y, brightness, alpha, r: pr, g: pg, b: pb } of dots) {
-          const wave = Math.sin(x * 0.045 + y * 0.045 + t) * 0.35;
+          const wave = (
+            Math.sin(x * 0.04 + y * 0.02 + t * 0.9) * 0.2 +
+            Math.sin(x * 0.015 - y * 0.05 + t * 1.3) * 0.15 +
+            Math.sin(x * 0.07 + y * 0.03 - t * 0.7) * 0.1
+          );
           const dist = Math.hypot(x - mx, y - my);
           const faceDist = Math.hypot(mx - W * 0.55, my - H * 0.32);
           const faceMute = Math.min(1, faceDist / (W * 0.32));
           const boost = dist < 160 ? (1 - dist / 160) * 3.5 * faceMute : 0;
-          const radius = Math.max(0.4, brightness * 2.8 * (1 + wave + boost));
-          const opacity = alpha * (0.55 + brightness * 0.45);
+          const radius = Math.max(0.8, (0.4 + brightness * 2.4) * (2.2 + wave + boost));
+          const opacity = alpha * (0.75 + brightness * 0.25);
 
           ctx.beginPath();
           ctx.arc(x, y, radius, 0, Math.PI * 2);
