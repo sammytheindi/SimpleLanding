@@ -6,6 +6,11 @@ export const CustomCursor = () => {
   const cursorY = useMotionValue(-100);
   const [isHovering, setIsHovering] = useState(false);
   const [isLight, setIsLight] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
+
+  useEffect(() => {
+    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
@@ -53,6 +58,8 @@ export const CustomCursor = () => {
       window.removeEventListener("mouseover", handleMouseOver);
     };
   }, [cursorX, cursorY]);
+
+  if (isTouch) return null;
 
   return (
     <>

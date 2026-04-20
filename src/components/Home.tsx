@@ -149,14 +149,10 @@ const DotMatrixPhoto = () => {
         }
       }
 
-      // Two persistent mask canvases — one for vertical gradient, one for cursor
+      // Persistent canvas for the face circle overlay
       const vertCanvas = document.createElement("canvas");
       vertCanvas.width = W; vertCanvas.height = H;
       const vCtx = vertCanvas.getContext("2d")!;
-
-      const maskCanvas = document.createElement("canvas");
-      maskCanvas.width = W; maskCanvas.height = H;
-      const mCtx = maskCanvas.getContext("2d")!;
 
       let t = 0;
       const draw = () => {
@@ -164,10 +160,14 @@ const DotMatrixPhoto = () => {
         t += 0.018;
         const mx = mouseRef.current.x, my = mouseRef.current.y;
 
-        // Draw animated dot matrix
+        // Draw animated dot matrix — dots near cursor grow larger
         for (const { x, y, brightness, alpha, r: pr, g: pg, b: pb } of dots) {
           const wave = Math.sin(x * 0.045 + y * 0.045 + t) * 0.35;
-          const radius = Math.max(0.4, brightness * 2.8 * (1 + wave));
+          const dist = Math.hypot(x - mx, y - my);
+          const faceDist = Math.hypot(mx - W * 0.55, my - H * 0.32);
+          const faceMute = Math.min(1, faceDist / (W * 0.32));
+          const boost = dist < 160 ? (1 - dist / 160) * 3.5 * faceMute : 0;
+          const radius = Math.max(0.4, brightness * 2.8 * (1 + wave + boost));
           const opacity = alpha * (0.55 + brightness * 0.45);
 
           ctx.beginPath();
@@ -181,28 +181,13 @@ const DotMatrixPhoto = () => {
         vCtx.drawImage(off, 0, 0);
         vCtx.globalCompositeOperation = "destination-in";
         const faceGrad = vCtx.createRadialGradient(W * 0.55, H * 0.32, 0, W * 0.55, H * 0.32, W * 0.32);
-        faceGrad.addColorStop(0,    "rgba(0,0,0,1)");
-        faceGrad.addColorStop(0.7,  "rgba(0,0,0,1)");
-        faceGrad.addColorStop(1,    "rgba(0,0,0,0)");
+        faceGrad.addColorStop(0,   "rgba(0,0,0,1)");
+        faceGrad.addColorStop(0.7, "rgba(0,0,0,1)");
+        faceGrad.addColorStop(1,   "rgba(0,0,0,0)");
         vCtx.fillStyle = faceGrad;
         vCtx.fillRect(0, 0, W, H);
         vCtx.globalCompositeOperation = "source-over";
         ctx.drawImage(vertCanvas, 0, 0);
-
-        // Cursor radial overlay — reveals photo anywhere on hover
-        if (mx > -1000) {
-          mCtx.clearRect(0, 0, W, H);
-          mCtx.drawImage(off, 0, 0);
-          mCtx.globalCompositeOperation = "destination-in";
-          const grad = mCtx.createRadialGradient(mx, my, 0, mx, my, 180);
-          grad.addColorStop(0,   "rgba(0,0,0,1)");
-          grad.addColorStop(0.6, "rgba(0,0,0,0.9)");
-          grad.addColorStop(1,   "rgba(0,0,0,0)");
-          mCtx.fillStyle = grad;
-          mCtx.fillRect(0, 0, W, H);
-          mCtx.globalCompositeOperation = "source-over";
-          ctx.drawImage(maskCanvas, 0, 0);
-        }
 
         rafRef.current = requestAnimationFrame(draw);
       };
@@ -227,7 +212,7 @@ const DotMatrixPhoto = () => {
       height={693}
       onMouseMove={onMouseMove}
       onMouseLeave={() => { mouseRef.current = { x: -9999, y: -9999 }; }}
-      className="cursor-none"
+      className="cursor-none w-full max-w-[520px]"
     />
   );
 };
@@ -287,6 +272,8 @@ const SLIDES = [
   { src: "/personal-2.jpg", caption: "Presenting LLM-augmented BCI research at Society For Neuroscience" },
   { src: "/personal-1.jpg", caption: "Using CAD and a custom gingerbread batter to over-engineer a gingerbread house with my wife!" },
   { src: "/personal-3.jpg", caption: "Getting lost on one of the nicest trails in Maryland (Sugarloaf iykyk)" },
+  { src: "/personal-4.jpg", caption: "Me and my wife after finishing our first marathon at the beautiful Rehoboth Beach!" },
+  { src: "/personal-5.png", caption: "Shredding up the slopes moments before wiping out at Snowshoe Mountain" },
 ];
 
 const PersonalCarousel = () => {
@@ -303,26 +290,8 @@ const PersonalCarousel = () => {
 
   return (
     <div className="relative border border-border overflow-hidden">
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
-        <motion.img
-          key={index}
-          src={SLIDES[index].src}
-          alt={SLIDES[index].caption}
-          initial={{ opacity: 0, x: dir * 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: dir * -40 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full h-full object-cover object-center"
-        />
-      </div>
-
-      {/* Caption */}
-      <div className="px-4 py-3 border-t border-border bg-background">
-        <p className="font-mono text-xs text-muted-foreground leading-relaxed">{SLIDES[index].caption}</p>
-      </div>
-
-      {/* Controls */}
-      <div className="flex items-center justify-between px-4 py-2 border-t border-border">
+      {/* Controls — fixed at top so caption changes don't shift layout */}
+      <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-background">
         <div className="flex gap-2">
           {SLIDES.map((_, i) => (
             <button
@@ -336,6 +305,25 @@ const PersonalCarousel = () => {
           <button onClick={prev} className="font-mono text-xs px-3 py-1 border border-border hover:bg-muted transition-colors">←</button>
           <button onClick={next} className="font-mono text-xs px-3 py-1 border border-border hover:bg-muted transition-colors">→</button>
         </div>
+      </div>
+
+      {/* Image */}
+      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+        <motion.img
+          key={index}
+          src={SLIDES[index].src}
+          alt={SLIDES[index].caption}
+          initial={{ opacity: 0, x: dir * 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: dir * -40 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full h-full object-cover object-center"
+        />
+      </div>
+
+      {/* Caption — fixed height so layout doesn't shift */}
+      <div className="px-4 py-3 border-t border-border bg-background min-h-[56px] flex items-center">
+        <p className="font-mono text-xs text-muted-foreground leading-relaxed">{SLIDES[index].caption}</p>
       </div>
     </div>
   );
@@ -430,7 +418,7 @@ export default function Home() {
               </div>
             </motion.div>
           </div>
-          <div className="hidden lg:flex justify-start">
+          <div className="flex justify-center lg:justify-start mt-8 lg:mt-0">
             <HeroPhoto />
           </div>
           </div>
