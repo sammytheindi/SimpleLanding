@@ -104,7 +104,6 @@ export const ProjectItem = ({
 const DotMatrixPhoto = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -9999, y: -9999 });
-  const rafRef = useRef<number>();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -132,27 +131,27 @@ const DotMatrixPhoto = () => {
         sy = 0;
       }
       offCtx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
-      const primary = getComputedStyle(document.documentElement)
-        .getPropertyValue("--primary").trim() || "220 100% 20%";
 
-      const draw = () => {
-        ctx.clearRect(0, 0, W, H);
-        // Draw grayscale
-        ctx.filter = "grayscale(1) brightness(1.9)";
-        ctx.drawImage(off, 0, 0);
-        ctx.filter = "none";
-        // Navy tint only over the silhouette
-        ctx.globalCompositeOperation = "source-atop";
-        ctx.fillStyle = "hsl(220 70% 15% / 0.5)";
-        ctx.fillRect(0, 0, W, H);
-        ctx.globalCompositeOperation = "source-over";
+      // Draw image then convert to grayscale + brightness via pixel manipulation
+      // (ctx.filter is not supported on iOS Safari < 18)
+      ctx.drawImage(off, 0, 0);
+      const imageData = ctx.getImageData(0, 0, W, H);
+      const d = imageData.data;
+      for (let i = 0; i < d.length; i += 4) {
+        if (d[i + 3] === 0) continue;
+        const gray = Math.min(255, (0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2]) * 1.9);
+        d[i] = d[i + 1] = d[i + 2] = gray;
+      }
+      ctx.putImageData(imageData, 0, 0);
 
-        rafRef.current = requestAnimationFrame(draw);
-      };
-      draw();
+      // Navy tint only over the silhouette
+      ctx.globalCompositeOperation = "source-atop";
+      ctx.fillStyle = "hsl(220 70% 15% / 0.5)";
+      ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = "source-over";
     };
 
-    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+    return () => {};
   }, []);
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -312,7 +311,7 @@ export default function Home() {
           <EEGBackground lineCount={15} opacity={0.075} />
         </motion.div>
 
-        <div className="container mx-auto px-6 relative z-10 pt-48 md:pt-32 pb-16 md:pb-0">
+        <div className="container mx-auto px-6 relative z-10 pt-56 md:pt-32 pb-16 md:pb-0">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
           <div className="max-w-2xl">
             <div className="overflow-hidden">
