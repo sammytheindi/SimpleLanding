@@ -273,7 +273,7 @@ const SLIDES = [
   { src: "/personal-1.jpg", caption: "Using CAD and a custom gingerbread batter to over-engineer a gingerbread house with my wife!" },
   { src: "/personal-3.jpg", caption: "Getting lost on one of the nicest trails in Maryland (Sugarloaf iykyk)" },
   { src: "/personal-4.jpg", caption: "Me and my wife after finishing our first marathon at the beautiful Rehoboth Beach!" },
-  { src: "/personal-5.png", caption: "Shredding up the slopes moments before wiping out at Snowshoe Mountain" },
+  { src: "/personal-5.jpg", caption: "Shredding up the slopes moments before wiping out at Snowshoe Mountain" },
 ];
 
 const PersonalCarousel = () => {
