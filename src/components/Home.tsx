@@ -359,10 +359,10 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <MagneticButton className="px-6 py-3 bg-foreground text-background font-mono text-xs uppercase tracking-widest hover:bg-primary transition-colors">
-                  <a href="/career">View Career</a>
+                  <a href="/career" onClick={() => window.posthog?.capture("view_career_clicked")}>View Career</a>
                 </MagneticButton>
                 <MagneticButton className="px-6 py-3 border border-primary text-primary font-mono text-xs uppercase tracking-widest hover:bg-primary hover:text-background transition-colors bg-transparent">
-                  <a href="/Samyak_Shah_CV.pdf" download>Download CV</a>
+                  <a href="/Samyak_Shah_CV.pdf" download onClick={() => window.posthog?.capture("cv_downloaded")}>Download CV</a>
                 </MagneticButton>
                 <MagneticButton className="px-6 py-3 border border-border font-mono text-xs uppercase tracking-widest hover:bg-muted transition-colors bg-transparent">
                   <a href="/blog">Read Blog</a>

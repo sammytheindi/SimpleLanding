@@ -38,7 +38,7 @@ export default function Navbar({ pathname }: NavbarProps) {
             Open to Senior / Staff ML roles · Dallas TX · Open to remote
           </span>
           <span className="text-green-400 font-mono text-[10px]">·</span>
-          <a href="/contact" className="font-mono text-[10px] font-bold uppercase tracking-widest text-white underline underline-offset-2 decoration-green-400 hover:text-green-200 transition-colors whitespace-nowrap">
+          <a href="/contact" onClick={() => window.posthog?.capture("lets_talk_cta_clicked")} className="font-mono text-[10px] font-bold uppercase tracking-widest text-white underline underline-offset-2 decoration-green-400 hover:text-green-200 transition-colors whitespace-nowrap">
             Let's talk →
           </a>
         </div>

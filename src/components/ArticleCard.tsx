@@ -16,7 +16,7 @@ interface ArticleCardProps {
 
 export default function ArticleCard({ post }: ArticleCardProps) {
   return (
-    <a href={`/blog/${post.slug}`}>
+    <a href={`/blog/${post.slug}`} onClick={() => window.posthog?.capture("blog_article_clicked", { slug: post.slug, title: post.data.title, category: post.data.category })}>
       <motion.article
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

@@ -77,7 +77,7 @@ export default function BlogPost({ post, children }: BlogPostProps) {
             Thanks for reading.
           </div>
           <div className="flex gap-4">
-            <button className="p-3 rounded-full border border-border hover:bg-foreground hover:text-background transition-colors">
+            <button onClick={() => window.posthog?.capture("blog_post_shared", { title: post.data.title, category: post.data.category })} className="p-3 rounded-full border border-border hover:bg-foreground hover:text-background transition-colors">
               <Share2 className="w-4 h-4" />
             </button>
           </div>

@@ -45,11 +45,15 @@ export default function Contact() {
       if (json.success) {
         setStatus("success");
         form.reset();
+        window.posthog?.capture("contact_form_submitted");
       } else {
         setStatus("error");
+        window.posthog?.capture("contact_form_failed", { reason: "api_error" });
       }
-    } catch {
+    } catch (err) {
       setStatus("error");
+      window.posthog?.capture("contact_form_failed", { reason: "network_error" });
+      window.posthog?.captureException(err);
     }
   };
 
@@ -108,6 +112,7 @@ export default function Contact() {
                   <a
                     href="https://linkedin.com"
                     target="_blank"
+                    onClick={() => window.posthog?.capture("social_link_clicked", { platform: "linkedin" })}
                     className="p-4 border border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
                   >
                     <Linkedin className="w-5 h-5" />
@@ -115,6 +120,7 @@ export default function Contact() {
                   <a
                     href="https://github.com"
                     target="_blank"
+                    onClick={() => window.posthog?.capture("social_link_clicked", { platform: "github" })}
                     className="p-4 border border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
                   >
                     <Github className="w-5 h-5" />
@@ -122,6 +128,7 @@ export default function Contact() {
                   <a
                     href="https://twitter.com"
                     target="_blank"
+                    onClick={() => window.posthog?.capture("social_link_clicked", { platform: "twitter" })}
                     className="p-4 border border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
                   >
                     <Twitter className="w-5 h-5" />

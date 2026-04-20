@@ -16,16 +16,17 @@ const FadeIn = ({ children, delay = 0, className = "" }: { children: React.React
 
 const ProjectListItem = ({ title, role, year, description, link }: { title: string, role: string, year: string, description?: string, link?: string }) => {
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, borderBottomColor: "hsl(var(--border))" }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
-      whileHover={{ 
-        borderBottomColor: "hsl(var(--primary))", 
+      whileHover={{
+        borderBottomColor: "hsl(var(--primary))",
         backgroundColor: "hsl(var(--muted) / 0.3)",
         paddingLeft: "1rem"
       }}
       transition={{ duration: 0.3 }}
+      onClick={() => window.posthog?.capture("venture_project_clicked", { title, role, year })}
       className="group flex flex-col md:flex-row md:items-start border-t border-border py-12 px-4 -mx-4 transition-all duration-300 cursor-pointer relative overflow-hidden"
     >
       <motion.div 

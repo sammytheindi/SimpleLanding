@@ -65,7 +65,7 @@ export default function Blog({ posts }: BlogProps) {
                 key={cat} 
                 label={cat} 
                 active={activeCategory === cat} 
-                onClick={() => setActiveCategory(cat)} 
+                onClick={() => { setActiveCategory(cat); window.posthog?.capture("blog_category_filtered", { category: cat }); }}
               />
             ))}
           </motion.div>
