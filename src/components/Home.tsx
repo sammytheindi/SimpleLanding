@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Mail, Github, Linkedin, Twitter } from "lucide-react";
 
@@ -101,78 +101,13 @@ export const ProjectItem = ({
 
 // --- Hero Photo Component ---
 
-const DotMatrixPhoto = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mouseRef = useRef({ x: -9999, y: -9999 });
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const W = 520, H = 693;
-
-    const img = new Image();
-    img.src = "/profile-transparent.png";
-    img.onload = () => {
-      const off = document.createElement("canvas");
-      off.width = W; off.height = H;
-      const offCtx = off.getContext("2d")!;
-
-      const imgAspect = img.naturalWidth / img.naturalHeight;
-      const canvasAspect = W / H;
-      let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
-      if (imgAspect > canvasAspect) {
-        sw = img.naturalHeight * canvasAspect;
-        sx = (img.naturalWidth - sw) / 2;
-      } else {
-        sh = img.naturalWidth / canvasAspect;
-        sy = 0;
-      }
-      offCtx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
-
-      // Draw image then convert to grayscale + brightness via pixel manipulation
-      // (ctx.filter is not supported on iOS Safari < 18)
-      ctx.drawImage(off, 0, 0);
-      const imageData = ctx.getImageData(0, 0, W, H);
-      const d = imageData.data;
-      for (let i = 0; i < d.length; i += 4) {
-        if (d[i + 3] === 0) continue;
-        const gray = Math.min(255, (0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2]) * 1.9);
-        d[i] = d[i + 1] = d[i + 2] = gray;
-      }
-      ctx.putImageData(imageData, 0, 0);
-
-      // Navy tint only over the silhouette
-      ctx.globalCompositeOperation = "source-atop";
-      ctx.fillStyle = "hsl(220 70% 15% / 0.5)";
-      ctx.fillRect(0, 0, W, H);
-      ctx.globalCompositeOperation = "source-over";
-    };
-
-    return () => {};
-  }, []);
-
-  const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const rect = canvasRef.current!.getBoundingClientRect();
-    mouseRef.current = {
-      x: (e.clientX - rect.left) * (520 / rect.width),
-      y: (e.clientY - rect.top) * (693 / rect.height),
-    };
-  };
-
-  return (
-    <canvas
-      ref={canvasRef}
-      width={520}
-      height={693}
-      onMouseMove={onMouseMove}
-      onMouseLeave={() => { mouseRef.current = { x: -9999, y: -9999 }; }}
-      className="cursor-none w-full max-w-[520px]"
-    />
-  );
-};
+const DotMatrixPhoto = () => (
+  <img
+    src="/profile-processed.png"
+    alt="Profile"
+    className="w-full max-w-[520px]"
+  />
+);
 
 const HeroPhoto = () => (
   <motion.div
