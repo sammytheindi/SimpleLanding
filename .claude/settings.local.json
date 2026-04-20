@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:scholar.google.com)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(grep -r \"Background\\\\|animation\\\\|canvas\\\\|three\" /Users/samyakshah/Documents/Projects/SimpleLanding/src/components/*.tsx --include=\"*.tsx\")",
+      "Bash(grep -r \"useEffect\\\\|animation\\\\|animate\" /Users/samyakshah/Documents/Projects/SimpleLanding/src/components/*.tsx)",
+      "Bash(sips -s format jpeg /Users/samyakshah/Downloads/IMG_1392.HEIC --out /Users/samyakshah/Documents/Projects/SimpleLanding/public/personal-1.jpg)",
+      "Bash(sips -s format jpeg /Users/samyakshah/Downloads/IMG_1218.HEIC --out /Users/samyakshah/Documents/Projects/SimpleLanding/public/personal-2.jpg)",
+      "Bash(cp /Users/samyakshah/Downloads/IMG_0827.JPG /Users/samyakshah/Documents/Projects/SimpleLanding/public/personal-3.jpg)",
+      "Bash(ls:*)"
     ]
   }
 }

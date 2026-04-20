@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, Mail, Github, Linkedin, Twitter } from "lucide-react";
 
@@ -100,27 +101,145 @@ export const ProjectItem = ({
 
 // --- Hero Photo Component ---
 
+const DotMatrixPhoto = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouseRef = useRef({ x: -9999, y: -9999 });
+  const rafRef = useRef<number>();
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const W = 520, H = 693, STEP = 3;
+
+    const img = new Image();
+    img.src = "/profile-transparent.png";
+    img.onload = () => {
+      const off = document.createElement("canvas");
+      off.width = W; off.height = H;
+      const offCtx = off.getContext("2d")!;
+
+      // object-cover object-top: fill canvas, crop sides if image is wider
+      const imgAspect = img.naturalWidth / img.naturalHeight;
+      const canvasAspect = W / H;
+      let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+      if (imgAspect > canvasAspect) {
+        sw = img.naturalHeight * canvasAspect;
+        sx = (img.naturalWidth - sw) / 2;
+      } else {
+        sh = img.naturalWidth / canvasAspect;
+        sy = 0; // object-top: anchor to top
+      }
+      offCtx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+      const { data } = offCtx.getImageData(0, 0, W, H);
+
+      type Dot = { x: number; y: number; brightness: number; alpha: number; r: number; g: number; b: number };
+      const dots: Dot[] = [];
+      for (let y = 0; y < H; y += STEP) {
+        for (let x = 0; x < W; x += STEP) {
+          const i = (y * W + x) * 4;
+          const alpha = data[i + 3] / 255;
+          if (alpha < 0.15) continue;
+          const rr = data[i], gg = data[i + 1], bb = data[i + 2];
+          const brightness = (rr * 0.299 + gg * 0.587 + bb * 0.114) / 255;
+          if (brightness < 0.05) continue;
+          dots.push({ x, y, brightness, alpha, r: rr, g: gg, b: bb });
+        }
+      }
+
+      // Two persistent mask canvases — one for vertical gradient, one for cursor
+      const vertCanvas = document.createElement("canvas");
+      vertCanvas.width = W; vertCanvas.height = H;
+      const vCtx = vertCanvas.getContext("2d")!;
+
+      const maskCanvas = document.createElement("canvas");
+      maskCanvas.width = W; maskCanvas.height = H;
+      const mCtx = maskCanvas.getContext("2d")!;
+
+      let t = 0;
+      const draw = () => {
+        ctx.clearRect(0, 0, W, H);
+        t += 0.018;
+        const mx = mouseRef.current.x, my = mouseRef.current.y;
+
+        // Draw animated dot matrix
+        for (const { x, y, brightness, alpha, r: pr, g: pg, b: pb } of dots) {
+          const wave = Math.sin(x * 0.045 + y * 0.045 + t) * 0.35;
+          const radius = Math.max(0.4, brightness * 2.8 * (1 + wave));
+          const opacity = alpha * (0.55 + brightness * 0.45);
+
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${pr}, ${pg}, ${pb}, ${opacity})`;
+          ctx.fill();
+        }
+
+        // Fixed face circle — clear photo over the face, dots everywhere else
+        vCtx.clearRect(0, 0, W, H);
+        vCtx.drawImage(off, 0, 0);
+        vCtx.globalCompositeOperation = "destination-in";
+        const faceGrad = vCtx.createRadialGradient(W * 0.55, H * 0.32, 0, W * 0.55, H * 0.32, W * 0.32);
+        faceGrad.addColorStop(0,    "rgba(0,0,0,1)");
+        faceGrad.addColorStop(0.7,  "rgba(0,0,0,1)");
+        faceGrad.addColorStop(1,    "rgba(0,0,0,0)");
+        vCtx.fillStyle = faceGrad;
+        vCtx.fillRect(0, 0, W, H);
+        vCtx.globalCompositeOperation = "source-over";
+        ctx.drawImage(vertCanvas, 0, 0);
+
+        // Cursor radial overlay — reveals photo anywhere on hover
+        if (mx > -1000) {
+          mCtx.clearRect(0, 0, W, H);
+          mCtx.drawImage(off, 0, 0);
+          mCtx.globalCompositeOperation = "destination-in";
+          const grad = mCtx.createRadialGradient(mx, my, 0, mx, my, 180);
+          grad.addColorStop(0,   "rgba(0,0,0,1)");
+          grad.addColorStop(0.6, "rgba(0,0,0,0.9)");
+          grad.addColorStop(1,   "rgba(0,0,0,0)");
+          mCtx.fillStyle = grad;
+          mCtx.fillRect(0, 0, W, H);
+          mCtx.globalCompositeOperation = "source-over";
+          ctx.drawImage(maskCanvas, 0, 0);
+        }
+
+        rafRef.current = requestAnimationFrame(draw);
+      };
+      draw();
+    };
+
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+  }, []);
+
+  const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const rect = canvasRef.current!.getBoundingClientRect();
+    mouseRef.current = {
+      x: (e.clientX - rect.left) * (520 / rect.width),
+      y: (e.clientY - rect.top) * (693 / rect.height),
+    };
+  };
+
+  return (
+    <canvas
+      ref={canvasRef}
+      width={520}
+      height={693}
+      onMouseMove={onMouseMove}
+      onMouseLeave={() => { mouseRef.current = { x: -9999, y: -9999 }; }}
+      className="cursor-none"
+    />
+  );
+};
+
 const HeroPhoto = () => (
   <motion.div
     initial={{ opacity: 0, x: 40 }}
     animate={{ opacity: 1, x: 0 }}
     transition={{ duration: 1.0, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-    className="relative w-72 xl:w-80"
+    className="relative"
   >
-    {/* Grid overlay — matches the site's grid pattern aesthetic */}
-    <div className="absolute inset-0 z-10 bg-[linear-gradient(to_right,#80808018_1px,transparent_1px),linear-gradient(to_bottom,#80808018_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-
-    {/* Primary color tint overlay — ties photo into the navy palette */}
-    <div className="absolute inset-0 z-10 bg-primary/10 mix-blend-multiply pointer-events-none" />
-
-    {/* The photo itself */}
-    <img
-      src="/profile.png"
-      alt="Samyak Shah"
-      className="w-full aspect-[3/4] object-cover object-top grayscale hover:grayscale-0 transition-all duration-500 border border-border"
-    />
-
-    {/* Decorative corner accents */}
+    <DotMatrixPhoto />
     <div className="absolute -bottom-3 -right-3 w-16 h-16 border border-primary/40 -z-10" />
     <div className="absolute -top-3 -left-3 w-8 h-8 border border-border -z-10" />
   </motion.div>
@@ -162,6 +281,66 @@ const HeroBackground = () => {
   );
 };
 
+// --- Personal Carousel ---
+
+const SLIDES = [
+  { src: "/personal-2.jpg", caption: "Presenting LLM-augmented BCI research at Society For Neuroscience" },
+  { src: "/personal-1.jpg", caption: "Using CAD and a custom gingerbread batter to over-engineer a gingerbread house with my wife!" },
+  { src: "/personal-3.jpg", caption: "Getting lost on one of the nicest trails in Maryland (Sugarloaf iykyk)" },
+];
+
+const PersonalCarousel = () => {
+  const [index, setIndex] = useState(0);
+  const [dir, setDir] = useState(1);
+
+  const go = (next: number) => {
+    setDir(next > index ? 1 : -1);
+    setIndex(next);
+  };
+
+  const prev = () => go((index - 1 + SLIDES.length) % SLIDES.length);
+  const next = () => go((index + 1) % SLIDES.length);
+
+  return (
+    <div className="relative border border-border overflow-hidden">
+      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+        <motion.img
+          key={index}
+          src={SLIDES[index].src}
+          alt={SLIDES[index].caption}
+          initial={{ opacity: 0, x: dir * 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: dir * -40 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full h-full object-cover object-center"
+        />
+      </div>
+
+      {/* Caption */}
+      <div className="px-4 py-3 border-t border-border bg-background">
+        <p className="font-mono text-xs text-muted-foreground leading-relaxed">{SLIDES[index].caption}</p>
+      </div>
+
+      {/* Controls */}
+      <div className="flex items-center justify-between px-4 py-2 border-t border-border">
+        <div className="flex gap-2">
+          {SLIDES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => go(i)}
+              className={`w-1.5 h-1.5 transition-colors ${i === index ? "bg-primary" : "bg-border"}`}
+            />
+          ))}
+        </div>
+        <div className="flex gap-2">
+          <button onClick={prev} className="font-mono text-xs px-3 py-1 border border-border hover:bg-muted transition-colors">←</button>
+          <button onClick={next} className="font-mono text-xs px-3 py-1 border border-border hover:bg-muted transition-colors">→</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- Main Page ---
 
 export default function Home() {
@@ -188,7 +367,7 @@ export default function Home() {
         </motion.div>
 
         <div className="container mx-auto px-6 relative z-10 pt-36 md:pt-20 pb-16 md:pb-0">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
           <div className="max-w-2xl">
             <div className="overflow-hidden">
               <motion.h1
@@ -251,7 +430,7 @@ export default function Home() {
               </div>
             </motion.div>
           </div>
-          <div className="hidden lg:flex justify-end">
+          <div className="hidden lg:flex justify-start">
             <HeroPhoto />
           </div>
           </div>
@@ -449,22 +628,9 @@ export default function Home() {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1">
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="aspect-[4/3] bg-gray-200 relative overflow-hidden border border-border"
-              >
-                <div className="absolute inset-0 bg-primary/10 z-10 mix-blend-multiply" />
-                {/* Placeholder for personal image */}
-                <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-400 font-mono text-xs pattern-grid-lg">
-                  <div className="text-center">
-                    <p>[Personal Image]</p>
-                    <p className="opacity-50 text-[10px] mt-2">Dallas, TX</p>
-                  </div>
-                </div>
-              </motion.div>
+              <FadeIn>
+                <PersonalCarousel />
+              </FadeIn>
             </div>
             <div className="order-1 md:order-2">
               <FadeIn>
